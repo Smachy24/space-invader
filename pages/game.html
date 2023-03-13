@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Game</title>
   <link rel="stylesheet" href="../styles/style.css">
+  <link rel="stylesheet" href="../styles/game.css">
 </head>
+
 <body>
-  <h3>Score :</h3>
-  <div class="grille"></div>
+  <nav>
+    <ul>
+      <li> <a href="../index.html"> Abandonner</a></li>
+      <li>Score:</li>
+      <li> <img src="" alt="music logo" /></li>
+    </ul>
+  </nav>
+
+  <div class="game-content">
+    <div class="grille"></div>
+  </div>
+  <div class="game-data">
+    <p>Données</p>
+    <ul>
+      <li id="pseudo">Pseudo</li>
+      <li id="theme">Theme:</li>
+      <li id="difficulty">Difficulté:</li>
+    </ul>
+  </div>
 
   <script src="../scripts/app.js"></script>
 </body>
+
 </html>
