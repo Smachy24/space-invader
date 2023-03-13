@@ -1,40 +1,59 @@
+let mobs = setMobs();
 
 function generateGrid(){
     const grid = document.querySelectorAll(".grille")[0];
     for(let i=0; i<12; i++){
         let element = document.createElement("div");
-        element.classList.add("left");
+        element.setAttribute('data-left','true')
         grid.appendChild(element);
 
         for(let j=0; j<18; j++){
             let element = document.createElement("div");
-            element.classList.add("mid");
             grid.appendChild(element);
         }
         element = document.createElement("div");
-        element.classList.add("right");
+        element.setAttribute('data-right','true')
         grid.appendChild(element);
 
     }
 }
-function addMob(index){
-    let box = document.querySelectorAll(".grille div")[index]
-    let element = document.createElement("img")
-    element.src= "../ressources/ennemies.png"
-    box.appendChild(element);
+function setMobs(){
+    aliens = []
+    for(let first=1; first<13;first++){
+        aliens.push(first)
+    }
+    for(let second=21; second<33;second++){
+        aliens.push(second)
+    }
+    for(let third=41; third<53;third++){
+        aliens.push(third)
+    }
+    return aliens
 }
 
-function generateMobs(){
-    for(let first=1; first<13;first++){
-        addMob(first)
-    }
-    for(let first=21; first<33;first++){
-        addMob(first)
-    }
-    for(let first=41; first<53;first++){
-        addMob(first)
-    }
+function addMobs(){
+    
+    mobs.forEach(index => {
+        let box = document.querySelectorAll(".grille div")[index]
+        box.classList.add("alien")
+    });
+
+}
+
+function clearMobs(){
+    mobs.forEach(index =>{
+        let box = document.querySelectorAll(".grille div")[index]
+        box.classList.remove("alien")
+    })
+}
+
+function moveMobs(){
+    clearMobs();
+    for(let i=0; i<mobs.length; i++){
+        mobs[i]+=1
+    } 
+    addMobs();
 }
 
 generateGrid();
-generateMobs();
+addMobs();
