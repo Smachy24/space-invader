@@ -1,0 +1,28 @@
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-content{
+    height: 50%;
+    border: 2px solid white;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    min-width: 700px;
+    min-height: 500px;
+    font-size: 30px;
+}
+
+.menu-content a,.menu-content a:visited{
+    color: white;
+    text-decoration: none;
+}
+.menu-content a:hover{
+    color: rgb(18, 194, 18);
+}
