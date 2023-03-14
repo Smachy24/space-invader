@@ -69,7 +69,7 @@ nav li {
 
 .bottom-links a {
     text-decoration: none;
-    color: white;
+    color: rgb(4, 4, 4);
     cursor: pointer;
 }
 .bottom-links a:hover {
@@ -99,4 +99,16 @@ nav li {
 
 .pop-up-title{
     font-size: 50px;
+}
+
+body{
+    background-color: black;
+}
+
+p{
+    color: white;
+}
+
+li{
+    color: white;
 }

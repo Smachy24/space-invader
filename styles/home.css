@@ -20,9 +20,17 @@
 }
 
 .menu-content a,.menu-content a:visited{
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
 }
 .menu-content a:hover{
     color: rgb(18, 194, 18);
+}
+
+body{
+    background-color: black;
+}
+
+h1{
+    color: white;
 }

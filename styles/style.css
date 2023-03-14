@@ -22,7 +22,7 @@ body{
 .grille {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid #000;
+    border: 1px solid white;
     width: 550px;
     height: 500px;
     margin: 0 auto;

@@ -52,3 +52,20 @@ input[type="text"]{
     font-family: "PixelEmulator",sans-serif;
     border: 2px solid white;
 }
+
+body{
+    background-color: black;
+
+}
+
+h1{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+input{
+    color: black;
+}
