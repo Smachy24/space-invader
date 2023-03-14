@@ -1,4 +1,24 @@
+@font-face {
+    font-family: PixelEmulator;
+    src: url("../ressources/PixelEmulator-xq08.ttf");
+}
 
+*{
+    margin:0;
+    padding: 0;
+}
+html{
+    width: 100%;
+    height: 100%;
+}
+body{
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    font-family: "PixelEmulator",sans-serif;
+    text-transform: uppercase;
+}
 .grille {
     display: flex;
     flex-wrap: wrap;
@@ -53,4 +73,7 @@ h3 {
 }
 .laser {
     background-color: orange;
+}
+a{
+    transition: all 500ms ease-in-out;
 }
