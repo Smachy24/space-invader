@@ -1,4 +1,5 @@
-let mobs = setMobs();
+let mobs = [];
+mobs = setMobs();
 let direction = "right"
 let shipPos = 230;
 
@@ -31,6 +32,7 @@ function setMobs() {
     for (let third = 41; third < 53; third++) {
         aliens.push(third)
     }
+    aliens.push(239);
     return aliens
 }
 
@@ -68,63 +70,63 @@ function moveIndex() {
     let leftBoxes = document.querySelectorAll("div[data-left].alien")
     let breakLeft = false;
 
-   
-    if(direction=="right"){
+
+    if (direction == "right") {
 
         rightBoxes.forEach(element => {
             console.log("ETAPE 1")
-            if(!breakRight){
-                direction="left"
+            if (!breakRight) {
+                direction = "left"
                 setIndexNextLine();
                 breakRight = true
             }
             element.classList.remove("alien")
-            
+
         });
     }
 
-    if(direction=="left"){
-        leftBoxes.forEach(element => { 
+    if (direction == "left") {
+        leftBoxes.forEach(element => {
             console.log("ETAPE 2")
-        if(!breakLeft){
-            direction="right"
-            setIndexNextLine();
-            breakLeft = true
-        }
-        element.classList.remove("alien")
+            if (!breakLeft) {
+                direction = "right"
+                setIndexNextLine();
+                breakLeft = true
+            }
+            element.classList.remove("alien")
 
-        }); 
+        });
     }
 
-    if(direction=="right"){
-        if(!breakRight && !breakLeft){
+    if (direction == "right") {
+        if (!breakRight && !breakLeft) {
             console.log("ETAPE 3")
-            for(let i=0; i<mobs.length; i++){
+            for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
-                if(box.getAttribute("data-left")){
+                if (box.getAttribute("data-left")) {
                     box.classList.remove("alien")
                 }
-                mobs[i]+=1
-            } 
+                mobs[i] += 1
+            }
         }
     }
 
-    if(direction=="left"){
-        if(!breakLeft &&!breakRight){
+    if (direction == "left") {
+        if (!breakLeft && !breakRight) {
             console.log("ETAPE 4")
 
-            for(let i=0; i<mobs.length; i++){
+            for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
-                if(box.getAttribute("data-right")){
+                if (box.getAttribute("data-right")) {
                     box.classList.remove("alien")
                 }
-                mobs[i]-=1
-            } 
+                mobs[i] -= 1
+            }
         }
     }
 }
 
-function moveMobs(){
+function moveMobs() {
     clearMobs();
     moveIndex()
     addMobs();
@@ -180,12 +182,13 @@ function moveDown() {
         shipPos += 20;
         allDiv[shipPos].classList.add("tireur")
     }
-    
+
 
 }
 
 window.addEventListener('keyup', (event) => {
     console.log(event);
+    end();
     if (event.key === "ArrowLeft") {
         moveLeft();
     }
@@ -199,4 +202,22 @@ window.addEventListener('keyup', (event) => {
         moveDown();
     }
 })
+var t = [1, 2]
 
+function end() {
+
+    var pop = document.querySelectorAll(".pop-up-end")[0];
+    var popTitle = document.querySelectorAll(".pop-up-title")[0];
+    var popImg = document.getElementById("img-pop-up")
+
+    if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
+        popImg.setAttribute("src","../ressources/lose.gif")
+        pop.style.display = "flex";
+        popTitle.innerHTML = "OOOOOOH TROP NUL "
+    }
+    else if (mobs.length === 0) {
+        popImg.setAttribute("src","../ressources/victory.gif")
+        pop.style.display = "flex";
+        popTitle.innerHTML = "YOHOUUUU VICTOIRE "
+    }
+}
