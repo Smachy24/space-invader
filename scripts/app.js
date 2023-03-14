@@ -118,6 +118,7 @@ function moveMobs() {
 generateGrid();
 addMobs();
 addShip();
+let allDiv = document.querySelectorAll(".grille div")
 
 
 function addShip() {
@@ -126,40 +127,45 @@ function addShip() {
 }
 
 function clearShip() {
-    let box = document.querySelectorAll(".grille div")[shipPos]
-    box.classList.remove("tireur")
+    allDiv[shipPos].classList.remove("tireur")
 }
 
 function moveLeft() {
-    clearShip();
-    shipPos -= 1;
-    var box = document.querySelectorAll(".grille div")[shipPos];
-    box.classList.add("tireur")
+
+    if (!allDiv[shipPos].getAttribute('data-left')) {
+        clearShip();
+        shipPos -= 1;
+        allDiv[shipPos].classList.add("tireur")
+
+    }
 }
 
 function moveRight() {
-
-    clearShip();
-    shipPos += 1;
-    let box = document.querySelectorAll(".grille div")[shipPos];
-    box.classList.add("tireur")
+    if (!allDiv[shipPos].getAttribute('data-right')) {
+        clearShip();
+        shipPos += 1;
+        allDiv[shipPos].classList.add("tireur")
+    }
 }
 
 function moveUp() {
 
-
-    clearShip();
-    shipPos -= 20;
-    let box = document.querySelectorAll(".grille div")[shipPos];
-    box.classList.add("tireur")
+    if (shipPos - 20 > 179) {
+        clearShip();
+        shipPos -= 20;
+        allDiv[shipPos].classList.add("tireur")
+    }
 
 }
 
 function moveDown() {
-    clearShip();
-    shipPos += 20;
-    let box = document.querySelectorAll(".grille div")[shipPos];
-    box.classList.add("tireur")
+
+    if (shipPos + 20 < 240) {
+        clearShip();
+        shipPos += 20;
+        allDiv[shipPos].classList.add("tireur")
+    }
+    
 
 }
 
