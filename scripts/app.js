@@ -17,6 +17,7 @@ function generateGrid(){
         grid.appendChild(element);
 
     }
+    addMobs();
 }
 function setMobs(){
     aliens = []
@@ -53,7 +54,6 @@ function clearMobs(){
 
 function setIndexNextLine(){
     for(let i=0; i<mobs.length; i++){
-        console.log(i)
         mobs[i]+=20
     }
 }
@@ -62,52 +62,70 @@ function moveIndex(){
 
     let rightBoxes = document.querySelectorAll("div[data-right].alien")
     let breakRight = false;
-    rightBoxes.forEach(element => {
-        if(breakRight==false){
-            direction="left"
-            setIndexNextLine();
-        }
-        breakRight = true
-        
-        }
-    );
-    let leftBoxes = document.querySelectorAll("div[data-left] .alien")
+    let leftBoxes = document.querySelectorAll("div[data-left].alien")
     let breakLeft = false;
-    leftBoxes.forEach(element => {
-            if(breakLeft==false){
-                direction="right"
+
+   
+    if(direction=="right"){
+
+        rightBoxes.forEach(element => {
+            console.log("ETAPE 1")
+            if(!breakRight){
+                direction="left"
                 setIndexNextLine();
+                breakRight = true
             }
-            box.classList.remove(element)
-            breakLeft = true
+            element.classList.remove("alien")
             
-    });
+        });
+    }
+
+    if(direction=="left"){
+        leftBoxes.forEach(element => { 
+            console.log("ETAPE 2")
+        if(!breakLeft){
+            direction="right"
+            setIndexNextLine();
+            breakLeft = true
+        }
+        element.classList.remove("alien")
+
+        }); 
+    }
 
     if(direction=="right"){
-        if(breakRight==false){
+        if(!breakRight && !breakLeft){
+            console.log("ETAPE 3")
             for(let i=0; i<mobs.length; i++){
+                let box = document.querySelectorAll(".grille div")[mobs[i]]
+                if(box.getAttribute("data-left")){
+                    box.classList.remove("alien")
+                }
                 mobs[i]+=1
             } 
         }
     }
 
     if(direction=="left"){
-        if(breakLeft==false){
+        if(!breakLeft &&!breakRight){
+            console.log("ETAPE 4")
+
             for(let i=0; i<mobs.length; i++){
+                let box = document.querySelectorAll(".grille div")[mobs[i]]
+                if(box.getAttribute("data-right")){
+                    box.classList.remove("alien")
+                }
                 mobs[i]-=1
             } 
         }
     }
-
-    
 }
 
 function moveMobs(){
-    console.log(mobs)
     clearMobs();
     moveIndex()
     addMobs();
 }
 
 generateGrid();
-addMobs();
+
