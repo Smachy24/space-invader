@@ -1,40 +1,41 @@
 let mobs = setMobs();
 let direction = "right"
+let shipPos = 230;
 
-function generateGrid(){
+function generateGrid() {
     const grid = document.querySelectorAll(".grille")[0];
-    for(let i=0; i<12; i++){
+    for (let i = 0; i < 12; i++) {
         let element = document.createElement("div");
-        element.setAttribute('data-left','true')
+        element.setAttribute('data-left', 'true')
         grid.appendChild(element);
 
-        for(let j=0; j<18; j++){
+        for (let j = 0; j < 18; j++) {
             let element = document.createElement("div");
             grid.appendChild(element);
         }
         element = document.createElement("div");
-        element.setAttribute('data-right','true')
+        element.setAttribute('data-right', 'true')
         grid.appendChild(element);
-        
+
     }
 }
-function setMobs(){
+function setMobs() {
     aliens = []
-    for(let first=1; first<13;first++){
+    for (let first = 1; first < 13; first++) {
         aliens.push(first)
     }
-    for(let second=21; second<33;second++){
+    for (let second = 21; second < 33; second++) {
         aliens.push(second)
     }
-    for(let third=41; third<53;third++){
+    for (let third = 41; third < 53; third++) {
         aliens.push(third)
     }
     return aliens
 }
 
 
-function addMobs(){
-    
+function addMobs() {
+
     mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
         box.classList.add("alien")
@@ -42,72 +43,72 @@ function addMobs(){
 
 }
 
-function clearMobs(){
-    mobs.forEach(index =>{
+function clearMobs() {
+    mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
-        if(!box.getAttribute("data-right") && !box.getAttribute("data-left")){
+        if (!box.getAttribute("data-right") && !box.getAttribute("data-left")) {
             box.classList.remove("alien")
         }
-        
+
     })
 }
 
-function setIndexNextLine(){
-    for(let i=0; i<mobs.length; i++){
+function setIndexNextLine() {
+    for (let i = 0; i < mobs.length; i++) {
         console.log(i)
-        mobs[i]+=20
+        mobs[i] += 20
     }
 }
 
-function moveIndex(){
+function moveIndex() {
 
     let rightBoxes = document.querySelectorAll("div[data-right].alien")
     let breakRight = false;
     console.log(rightBoxes)
     rightBoxes.forEach(element => {
         console.log(element.className)
-        
+
         console.log("1")
-        if(breakRight==false){
-            direction="left"
+        if (breakRight == false) {
+            direction = "left"
             setIndexNextLine();
         }
         breakRight = true
-        
-        }
+
+    }
     );
     let leftBoxes = document.querySelectorAll("div[data-left] .alien")
     let breakLeft = false;
     leftBoxes.forEach(element => {
-            if(breakLeft==false){
-                direction="right"
-                setIndexNextLine();
-            }
-            box.classList.remove(element)
-            breakLeft = true
-            
+        if (breakLeft == false) {
+            direction = "right"
+            setIndexNextLine();
+        }
+        box.classList.remove(element)
+        breakLeft = true
+
     });
 
-    if(direction=="right"){
-        if(breakRight==false){
-            for(let i=0; i<mobs.length; i++){
-                mobs[i]+=1
-            } 
+    if (direction == "right") {
+        if (breakRight == false) {
+            for (let i = 0; i < mobs.length; i++) {
+                mobs[i] += 1
+            }
         }
     }
 
-    if(direction=="left"){
-        if(breakLeft==false){
-            for(let i=0; i<mobs.length; i++){
-                mobs[i]-=1
-            } 
+    if (direction == "left") {
+        if (breakLeft == false) {
+            for (let i = 0; i < mobs.length; i++) {
+                mobs[i] -= 1
+            }
         }
     }
 
-    
+
 }
 
-function moveMobs(){
+function moveMobs() {
     console.log(mobs)
     clearMobs();
     moveIndex()
@@ -119,7 +120,62 @@ addMobs();
 addShip();
 
 
-function addShip(){
-    let box = document.querySelectorAll(".grille div")[230];
+function addShip() {
+    let box = document.querySelectorAll(".grille div")[shipPos];
     box.classList.add("tireur")
 }
+
+function clearShip() {
+    let box = document.querySelectorAll(".grille div")[shipPos]
+    box.classList.remove("tireur")
+}
+
+function moveLeft() {
+    clearShip();
+    shipPos -= 1;
+    var box = document.querySelectorAll(".grille div")[shipPos];
+    box.classList.add("tireur")
+}
+
+function moveRight() {
+
+    clearShip();
+    shipPos += 1;
+    let box = document.querySelectorAll(".grille div")[shipPos];
+    box.classList.add("tireur")
+}
+
+function moveUp() {
+
+
+    clearShip();
+    shipPos -= 20;
+    let box = document.querySelectorAll(".grille div")[shipPos];
+    box.classList.add("tireur")
+
+}
+
+function moveDown() {
+    clearShip();
+    shipPos += 20;
+    let box = document.querySelectorAll(".grille div")[shipPos];
+    box.classList.add("tireur")
+
+}
+
+window.addEventListener('keyup', (event) => {
+    console.log(event);
+    if (event.key === "ArrowLeft") {
+        moveLeft();
+    }
+    if (event.key === "ArrowRight") {
+        moveRight();
+    }
+    if (event.key === "ArrowUp") {
+        moveUp();
+    }
+    if (event.key === "ArrowDown") {
+        moveDown();
+    }
+})
+
