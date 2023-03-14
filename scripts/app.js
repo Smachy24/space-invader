@@ -32,7 +32,6 @@ function setMobs() {
     for (let third = 41; third < 53; third++) {
         aliens.push(third)
     }
-    aliens.push(239);
     return aliens
 }
 
