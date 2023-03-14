@@ -69,7 +69,7 @@ nav li {
 
 .bottom-links a {
     text-decoration: none;
-    color: rgb(4, 4, 4);
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 .bottom-links a:hover {
@@ -83,7 +83,7 @@ nav li {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.663);
+    background-color: rgba(7, 8, 7, 0.663);
     border-radius: 7px;
     font-size: 30px;
     width: 50%;
@@ -111,4 +111,9 @@ p{
 
 li{
     color: white;
+}
+
+#img-pop-up{
+    width: 70%;
+    max-width: 300px;
 }
