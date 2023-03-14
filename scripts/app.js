@@ -62,11 +62,7 @@ function moveIndex(){
 
     let rightBoxes = document.querySelectorAll("div[data-right].alien")
     let breakRight = false;
-    console.log(rightBoxes)
     rightBoxes.forEach(element => {
-        console.log(element.className)
-        
-        console.log("1")
         if(breakRight==false){
             direction="left"
             setIndexNextLine();
