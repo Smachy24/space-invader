@@ -68,7 +68,9 @@ h3 {
     background-size: contain;
 }
 .boom {
-    background-color: red;
+    background: url(../ressources/explosionpng.png);
+    background-position: center;
+    background-size: contain;
 }
 .laser {
     background: url(../ressources/lazer.png);

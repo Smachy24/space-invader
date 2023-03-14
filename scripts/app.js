@@ -208,15 +208,15 @@ function shoot() {
         moveShootUp();
         if(allDiv[laserPos-20].className=="alien"){
             allDiv[laserPos-20].classList.remove("alien")
+            allDiv[laserPos-20].classList.add("boom")
             setTimeout(()=>{
                 allDiv[laserPos].classList.remove("laser")
+                allDiv[laserPos-20].classList.remove("boom")
             },100)
             
             clearInterval(interval)
         }
     },50)
-    
-   
 }
 
 window.addEventListener('keyup', (event) => {
