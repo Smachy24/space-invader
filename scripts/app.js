@@ -15,7 +15,7 @@ function generateGrid(){
         element = document.createElement("div");
         element.setAttribute('data-right','true')
         grid.appendChild(element);
-
+        
     }
 }
 function setMobs(){
@@ -31,6 +31,7 @@ function setMobs(){
     }
     return aliens
 }
+
 
 function addMobs(){
     
@@ -115,3 +116,10 @@ function moveMobs(){
 
 generateGrid();
 addMobs();
+addShip();
+
+
+function addShip(){
+    let box = document.querySelectorAll(".grille div")[230];
+    box.classList.add("tireur")
+}
