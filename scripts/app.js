@@ -189,7 +189,11 @@ function loadShoot(){
 function moveShootUp(){
     allDiv[laserPos].classList.remove("laser")
     laserPos-=20
-    allDiv[laserPos].classList.add("laser")
+    if(laserPos>=0){
+        allDiv[laserPos].classList.add("laser")
+        
+    }
+    
 }
 
 let lastShootTime = 0;
@@ -206,8 +210,14 @@ function shoot() {
     loadShoot();
     
     const interval = setInterval(function(){
+        if(laserPos<0){
+            return;
+        }
         moveShootUp();
         if(allDiv[laserPos-20].className=="alien"){
+            console.log(mobs);
+            mobs.splice(mobs.indexOf(laserPos-20),1)
+            console.log(mobs);
             allDiv[laserPos-20].classList.remove("alien")
             allDiv[laserPos-20].classList.add("boom")
             setTimeout(()=>{
@@ -221,7 +231,6 @@ function shoot() {
 }
 
 window.addEventListener('keyup', (event) => {
-    end();
     if (event.key === "ArrowLeft") {
         moveLeft();
     }
@@ -238,8 +247,6 @@ window.addEventListener('keyup', (event) => {
         shoot();
     }
 })
-var t = [1, 2]
-
 function end() {
 
     var pop = document.querySelectorAll(".pop-up-end")[0];
@@ -257,3 +264,10 @@ function end() {
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
     }
 }
+
+function game(){
+    moveMobs();
+    end();   
+}
+
+setInterval(game,1000)
