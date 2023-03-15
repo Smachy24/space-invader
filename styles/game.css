@@ -39,8 +39,8 @@ nav li {
 
 .game-data {
     position: absolute;
-    bottom: 100px;
-    right: 100px;
+    bottom: 10px;
+    right: 10px;
     font-size: 30px;
     border: 2px solid white;
     padding: 50px;
