@@ -32,6 +32,8 @@ window.addEventListener(
     false
 );
 
+document.body.style.background = `url("../ressources/${theme}.jpg")`
+
 
 
 function generateGrid() {
@@ -50,6 +52,7 @@ function generateGrid() {
         grid.appendChild(element);
 
     }
+
     addMobs();
 }
 function setMobs() {
@@ -67,10 +70,9 @@ function setMobs() {
 }
 
 function addMobs() {
-
     mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
-        box.classList.add("alien")
+        box.classList.add(theme)
     });
 
 }
@@ -79,7 +81,7 @@ function clearMobs() {
     mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
         if (!box.getAttribute("data-right") && !box.getAttribute("data-left")) {
-            box.classList.remove("alien")
+            box.classList.remove(theme)
         }
 
     })
@@ -92,12 +94,12 @@ function setIndexNextLine() {
 }
 
 function moveIndex() {
-
-    let rightBoxes = document.querySelectorAll("div[data-right].alien")
+    let rightBoxes, leftBoxes;
+    
     let breakRight = false;
-    let leftBoxes = document.querySelectorAll("div[data-left].alien")
     let breakLeft = false;
-
+    rightBoxes = document.querySelectorAll(`div[data-right].${theme}`)
+    leftBoxes = document.querySelectorAll(`div[data-left].${theme}`)
 
     if (direction == "right") {
 
@@ -107,7 +109,7 @@ function moveIndex() {
                 setIndexNextLine();
                 breakRight = true
             }
-            element.classList.remove("alien")
+            element.classList.remove(theme)
 
         });
     }
@@ -119,7 +121,7 @@ function moveIndex() {
                 setIndexNextLine();
                 breakLeft = true
             }
-            element.classList.remove("alien")
+            element.classList.remove(theme)
 
         });
     }
@@ -129,7 +131,7 @@ function moveIndex() {
             for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
                 if (box.getAttribute("data-left")) {
-                    box.classList.remove("alien")
+                    box.classList.remove(theme)
                 }
                 mobs[i] += 1
             }
@@ -142,7 +144,7 @@ function moveIndex() {
             for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
                 if (box.getAttribute("data-right")) {
-                    box.classList.remove("alien")
+                    box.classList.remove(theme)
                 }
                 mobs[i] -= 1
             }
@@ -214,7 +216,7 @@ function moveDown() {
 
 function loadShoot() {
     laserPos = shipPos - 20
-    if (allDiv[laserPos].className == "alien") {
+    if (allDiv[laserPos].className == theme) {
         destroyMob(laserPos + 20);
         return true;
     }
@@ -222,7 +224,7 @@ function loadShoot() {
 }
 
 function moveShootUp() {
-    if (allDiv[laserPos - 20].className == "alien") {
+    if (allDiv[laserPos - 20].className == theme) {
         destroyMob(laserPos);
         return true;
     }
@@ -240,7 +242,7 @@ const cooldown = 500;
 
 function destroyMob(laserPos) {
     mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
-    allDiv[laserPos - 20].classList.remove("alien")
+    allDiv[laserPos - 20].classList.remove(theme)
     allDiv[laserPos - 20].classList.add("boom")
     setTimeout(() => {
         allDiv[laserPos].classList.remove("laser")
