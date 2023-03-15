@@ -2,7 +2,33 @@ let mobs = [];
 mobs = setMobs();
 let direction = "right"
 let shipPos = 230;
-let laserPos=shipPos
+let laserPos = shipPos
+
+var pseudoLabel = document.querySelector("#pseudo");
+var themeLabel = document.querySelector("#theme");
+var difficultyLabel = document.querySelector("#difficulty");
+
+var pseudo = localStorage.getItem("pseudo");
+var theme = localStorage.getItem("theme");
+var difficulty = localStorage.getItem("difficulty");
+
+pseudoLabel.innerHTML = `Pseudo: ${pseudo}`
+themeLabel.innerHTML = `Theme: ${theme}`
+difficultyLabel.innerHTML = `Difficulté: ${difficulty}`
+
+window.addEventListener(
+    "keydown",
+    function (e) {
+      if (
+        ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
+          e.code
+        ) > -1
+      ) {
+        e.preventDefault();
+      }
+    },
+    false
+  ); 
 
 function generateGrid() {
     const grid = document.querySelectorAll(".grille")[0];
@@ -73,8 +99,8 @@ function moveIndex() {
     if (direction == "right") {
 
         rightBoxes.forEach(element => {
-            if(!breakRight){
-                direction="left"
+            if (!breakRight) {
+                direction = "left"
                 setIndexNextLine();
                 breakRight = true
             }
@@ -83,21 +109,21 @@ function moveIndex() {
         });
     }
 
-    if(direction=="left"){
-        leftBoxes.forEach(element => { 
-        if(!breakLeft){
-            direction="right"
-            setIndexNextLine();
-            breakLeft = true
-        }
-        element.classList.remove("alien")
+    if (direction == "left") {
+        leftBoxes.forEach(element => {
+            if (!breakLeft) {
+                direction = "right"
+                setIndexNextLine();
+                breakLeft = true
+            }
+            element.classList.remove("alien")
 
         });
     }
 
-    if(direction=="right"){
-        if(!breakRight && !breakLeft){
-            for(let i=0; i<mobs.length; i++){
+    if (direction == "right") {
+        if (!breakRight && !breakLeft) {
+            for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
                 if (box.getAttribute("data-left")) {
                     box.classList.remove("alien")
@@ -107,8 +133,8 @@ function moveIndex() {
         }
     }
 
-    if(direction=="left"){
-        if(!breakLeft &&!breakRight){
+    if (direction == "left") {
+        if (!breakLeft && !breakRight) {
 
             for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
@@ -181,14 +207,14 @@ function moveDown() {
 
 }
 
-function loadShoot(){
-    laserPos = shipPos-20
+function loadShoot() {
+    laserPos = shipPos - 20
     allDiv[laserPos].classList.add("laser")
 }
 
-function moveShootUp(){
+function moveShootUp() {
     allDiv[laserPos].classList.remove("laser")
-    laserPos-=20
+    laserPos -= 20
     allDiv[laserPos].classList.add("laser")
 }
 
@@ -204,20 +230,20 @@ function shoot() {
 
 
     loadShoot();
-    
-    const interval = setInterval(function(){
+
+    const interval = setInterval(function () {
         moveShootUp();
-        if(allDiv[laserPos-20].className=="alien"){
-            allDiv[laserPos-20].classList.remove("alien")
-            allDiv[laserPos-20].classList.add("boom")
-            setTimeout(()=>{
+        if (allDiv[laserPos - 20].className == "alien") {
+            allDiv[laserPos - 20].classList.remove("alien")
+            allDiv[laserPos - 20].classList.add("boom")
+            setTimeout(() => {
                 allDiv[laserPos].classList.remove("laser")
-                allDiv[laserPos-20].classList.remove("boom")
-            },100)
-            
+                allDiv[laserPos - 20].classList.remove("boom")
+            }, 100)
+
             clearInterval(interval)
         }
-    },50)
+    }, 50)
 }
 
 window.addEventListener('keyup', (event) => {
@@ -247,13 +273,14 @@ function end() {
     var popImg = document.getElementById("img-pop-up")
 
     if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
-        popImg.setAttribute("src","../ressources/lose.gif")
+        popImg.setAttribute("src", "../ressources/lose.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "OOOOOOH TROP NUL "
     }
     else if (mobs.length === 0) {
-        popImg.setAttribute("src","../ressources/victory.gif")
+        popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
     }
 }
+
