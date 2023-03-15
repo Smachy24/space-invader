@@ -2,7 +2,9 @@ let mobs = [];
 mobs = setMobs();
 let direction = "right"
 let shipPos = 230;
-let laserPos = shipPos
+let laserPos = shipPos;
+var startTime, endTime, elapsedTime, timerInterval;
+
 
 var pseudoLabel = document.querySelector("#pseudo");
 var themeLabel = document.querySelector("#theme");
@@ -12,23 +14,25 @@ var pseudo = localStorage.getItem("pseudo");
 var theme = localStorage.getItem("theme");
 var difficulty = localStorage.getItem("difficulty");
 
-pseudoLabel.innerHTML = `Pseudo: ${pseudo}`
-themeLabel.innerHTML = `Theme: ${theme}`
-difficultyLabel.innerHTML = `Difficulté: ${difficulty}`
+pseudoLabel.innerHTML = `Pseudo: ${pseudo}`;
+themeLabel.innerHTML = `Theme: ${theme}`;
+difficultyLabel.innerHTML = `Difficulté: ${difficulty}`;
 
 window.addEventListener(
     "keydown",
     function (e) {
-      if (
-        ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
-          e.code
-        ) > -1
-      ) {
-        e.preventDefault();
-      }
+        if (
+            ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
+                e.code
+            ) > -1
+        ) {
+            e.preventDefault();
+        }
     },
     false
-  ); 
+);
+
+
 
 function generateGrid() {
     const grid = document.querySelectorAll(".grille")[0];
@@ -156,6 +160,8 @@ function moveMobs() {
 generateGrid();
 addMobs();
 addShip();
+startTimer();
+
 let allDiv = document.querySelectorAll(".grille div")
 
 
@@ -266,11 +272,14 @@ window.addEventListener('keyup', (event) => {
 })
 var t = [1, 2]
 
+
 function end() {
+    stopTimer();
 
     var pop = document.querySelectorAll(".pop-up-end")[0];
     var popTitle = document.querySelectorAll(".pop-up-title")[0];
     var popImg = document.getElementById("img-pop-up")
+
 
     if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
         popImg.setAttribute("src", "../ressources/lose.gif")
@@ -281,6 +290,47 @@ function end() {
         popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
+    
+        var score = { "pseudo": pseudo, "theme": theme, "difficulty": difficulty, "scoreVal": elapsedTime }
+    
+        var scores = localStorage.getItem("allScores");
+    
+        if (!scores) {
+            scores = []
+            scores.push(score)
+            localStorage.setItem("allScores", scores)
+        }
+        else {
+            scores.push(score);
+            localStorage.setItem("allScores", scores)
+        }
     }
 }
 
+
+function updateChrono() {
+    var currentTime = Date.now() - startTime;
+    var minutes = Math.floor(currentTime / 60000);
+    var seconds = Math.floor((currentTime % 60000) / 1000);
+    var milliseconds = Math.floor((currentTime % 1000) / 10);
+
+    minutes = (minutes < 10 ? "0" : "") + minutes.toString();
+    seconds = (seconds < 10 ? "0" : "") + seconds.toString();
+    milliseconds = (milliseconds < 10 ? "0" : "") + milliseconds.toString();
+
+    document.getElementById("chrono").innerHTML = minutes + ":" + seconds + ":" + milliseconds;
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    endTime = Date.now();
+}
+
+function startTimer() {
+    elapsedTime = 0;
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function () {
+        elapsedTime = Date.now() - startTime;
+        updateChrono(elapsedTime);
+    }, 10);
+}
