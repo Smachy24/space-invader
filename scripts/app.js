@@ -221,6 +221,7 @@ function shoot() {
 }
 
 window.addEventListener('keyup', (event) => {
+    end();
     if (event.key === "ArrowLeft") {
         moveLeft();
     }
