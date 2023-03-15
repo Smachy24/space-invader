@@ -183,10 +183,18 @@ function moveDown() {
 
 function loadShoot(){
     laserPos = shipPos-20
+    if(allDiv[laserPos].className=="alien"){
+        destroyMob(laserPos+20);
+        return true;
+    }
     allDiv[laserPos].classList.add("laser")
 }
 
 function moveShootUp(){
+    if(allDiv[laserPos-20].className=="alien"){
+        destroyMob(laserPos);
+        return true;
+    }
     allDiv[laserPos].classList.remove("laser")
     laserPos-=20
     if(laserPos>=0){
@@ -199,6 +207,17 @@ function moveShootUp(){
 let lastShootTime = 0;
 const cooldown = 500;
 
+function destroyMob(laserPos){
+    mobs.splice(mobs.indexOf(laserPos-20),1) // On retirer l'alien touché
+    allDiv[laserPos-20].classList.remove("alien")
+    allDiv[laserPos-20].classList.add("boom")
+    setTimeout(()=>{
+        allDiv[laserPos].classList.remove("laser")
+        allDiv[laserPos-20].classList.remove("boom")
+    },100)
+                
+}
+
 function shoot() {
     const currentTime = Date.now();
     if (currentTime - lastShootTime < cooldown) {
@@ -206,27 +225,28 @@ function shoot() {
     }
     lastShootTime = currentTime;
 
-
-    loadShoot();
+    if(loadShoot()){
+        return;
+    }
+    
     
     const interval = setInterval(function(){
-        if(laserPos<0){
-            return;
-        }
-        moveShootUp();
-        if(allDiv[laserPos-20].className=="alien"){
-            console.log(mobs);
-            mobs.splice(mobs.indexOf(laserPos-20),1)
-            console.log(mobs);
-            allDiv[laserPos-20].classList.remove("alien")
-            allDiv[laserPos-20].classList.add("boom")
-            setTimeout(()=>{
-                allDiv[laserPos].classList.remove("laser")
-                allDiv[laserPos-20].classList.remove("boom")
-            },100)
-            
+        
+        if(moveShootUp()){
             clearInterval(interval)
         }
+        // if(laserPos>20){
+        //     if(allDiv[laserPos-20].className=="alien"){
+        //         destroyMob(laserPos);
+        //         clearInterval(interval)
+        //     }
+        // }
+        if(laserPos<20){
+            allDiv[laserPos].classList.remove("laser")
+            clearInterval(interval)
+            return;
+        }
+        
     },50)
 }
 
@@ -257,17 +277,22 @@ function end() {
         popImg.setAttribute("src","../ressources/lose.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "OOOOOOH TROP NUL "
+        return true;
     }
     else if (mobs.length === 0) {
         popImg.setAttribute("src","../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
+        return true;
     }
 }
 
 function game(){
     moveMobs();
-    end();   
+    endGame = end();  
+    if(endGame){
+        clearInterval(gameInterval);
+    } 
 }
 
-setInterval(game,1000)
+gameInterval = setInterval(game,1000)
