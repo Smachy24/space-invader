@@ -8,7 +8,7 @@ function generateFakeScores() {
         var theme = themes[Math.floor(Math.random() * themes.length)];
         var difficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
         var scoreVal = Math.floor(Math.random() * 9001) + 1000;
-        var score = { "pseudo": pseudo, "theme": theme, "difficulty": difficulty, "scoreVal": scoreVal };
+        var score = { pseudo: pseudo, theme: theme, theme: difficulty, theme: scoreVal };
         scores.push(score);
     }
     return scores;
@@ -16,6 +16,7 @@ function generateFakeScores() {
 
 
 var scores = localStorage.getItem("allScores");
+console.log(scores.pseudo)
 
 if (!scores) {
     scores = generateFakeScores();

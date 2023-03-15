@@ -295,7 +295,6 @@ window.addEventListener('keyup', (event) => {
     }
 })
 function end() {
-    stopTimer();
 
     var pop = document.querySelectorAll(".pop-up-end")[0];
     var popTitle = document.querySelectorAll(".pop-up-title")[0];
@@ -306,25 +305,23 @@ function end() {
         popImg.setAttribute("src", "../ressources/lose.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "OOOOOOH TROP NUL "
+        stopTimer();
     }
     else if (mobs.length === 0) {
         popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
     
-        var score = { "pseudo": pseudo, "theme": theme, "difficulty": difficulty, "scoreVal": elapsedTime }
+        var score = { pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }
     
-        var scores = localStorage.getItem("allScores");
+        // var scores = localStorage.getItem("allScores");
     
-        if (!scores) {
-            scores = []
-            scores.push(score)
-            localStorage.setItem("allScores", scores)
-        }
-        else {
-            scores.push(score);
-            localStorage.setItem("allScores", scores)
-        }
+        
+        
+        localStorage.setItem("allScores", score)
+ 
+       
+        stopTimer();
     }
 }
 
