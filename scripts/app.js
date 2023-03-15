@@ -2,6 +2,7 @@ let mobs = [];
 mobs = setMobs();
 let direction = "right"
 let shipPos = 230;
+let laserPos=shipPos
 
 function generateGrid() {
     const grid = document.querySelectorAll(".grille")[0];
@@ -57,7 +58,6 @@ function clearMobs() {
 
 function setIndexNextLine() {
     for (let i = 0; i < mobs.length; i++) {
-        console.log(i)
         mobs[i] += 20
     }
 }
@@ -73,9 +73,8 @@ function moveIndex() {
     if (direction == "right") {
 
         rightBoxes.forEach(element => {
-            console.log("ETAPE 1")
-            if (!breakRight) {
-                direction = "left"
+            if(!breakRight){
+                direction="left"
                 setIndexNextLine();
                 breakRight = true
             }
@@ -84,23 +83,21 @@ function moveIndex() {
         });
     }
 
-    if (direction == "left") {
-        leftBoxes.forEach(element => {
-            console.log("ETAPE 2")
-            if (!breakLeft) {
-                direction = "right"
-                setIndexNextLine();
-                breakLeft = true
-            }
-            element.classList.remove("alien")
+    if(direction=="left"){
+        leftBoxes.forEach(element => { 
+        if(!breakLeft){
+            direction="right"
+            setIndexNextLine();
+            breakLeft = true
+        }
+        element.classList.remove("alien")
 
         });
     }
 
-    if (direction == "right") {
-        if (!breakRight && !breakLeft) {
-            console.log("ETAPE 3")
-            for (let i = 0; i < mobs.length; i++) {
+    if(direction=="right"){
+        if(!breakRight && !breakLeft){
+            for(let i=0; i<mobs.length; i++){
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
                 if (box.getAttribute("data-left")) {
                     box.classList.remove("alien")
@@ -110,9 +107,8 @@ function moveIndex() {
         }
     }
 
-    if (direction == "left") {
-        if (!breakLeft && !breakRight) {
-            console.log("ETAPE 4")
+    if(direction=="left"){
+        if(!breakLeft &&!breakRight){
 
             for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
@@ -185,9 +181,46 @@ function moveDown() {
 
 }
 
+function loadShoot(){
+    laserPos = shipPos-20
+    allDiv[laserPos].classList.add("laser")
+}
+
+function moveShootUp(){
+    allDiv[laserPos].classList.remove("laser")
+    laserPos-=20
+    allDiv[laserPos].classList.add("laser")
+}
+
+let lastShootTime = 0;
+const cooldown = 500;
+
+function shoot() {
+    const currentTime = Date.now();
+    if (currentTime - lastShootTime < cooldown) {
+        return;
+    }
+    lastShootTime = currentTime;
+
+
+    loadShoot();
+    
+    const interval = setInterval(function(){
+        moveShootUp();
+        if(allDiv[laserPos-20].className=="alien"){
+            allDiv[laserPos-20].classList.remove("alien")
+            allDiv[laserPos-20].classList.add("boom")
+            setTimeout(()=>{
+                allDiv[laserPos].classList.remove("laser")
+                allDiv[laserPos-20].classList.remove("boom")
+            },100)
+            
+            clearInterval(interval)
+        }
+    },50)
+}
+
 window.addEventListener('keyup', (event) => {
-    console.log(event);
-    end();
     if (event.key === "ArrowLeft") {
         moveLeft();
     }
@@ -199,6 +232,9 @@ window.addEventListener('keyup', (event) => {
     }
     if (event.key === "ArrowDown") {
         moveDown();
+    }
+    if (event.code === "Space") {
+        shoot();
     }
 })
 var t = [1, 2]

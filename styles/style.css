@@ -23,7 +23,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     border: 1px solid white;
-    width: 550px;
+    width: 500px;
     height: 500px;
     margin: 0 auto;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -53,7 +53,6 @@ h3 {
 .grille div{
     width: 25px;
     height: 25px;
-    border: 1px solid red;
 }
 
 
@@ -69,10 +68,14 @@ h3 {
     background-size: contain;
 }
 .boom {
-    background-color: red;
+    background: url(../ressources/explosionpng.png);
+    background-position: center;
+    background-size: contain;
 }
 .laser {
-    background-color: orange;
+    background: url(../ressources/lazer.png);
+    background-position: center;
+    background-size: contain;
 }
 a{
     transition: all 500ms ease-in-out;
