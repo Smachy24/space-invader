@@ -2,7 +2,37 @@ let mobs = [];
 mobs = setMobs();
 let direction = "right"
 let shipPos = 230;
-let laserPos=shipPos
+let laserPos = shipPos;
+var startTime, endTime, elapsedTime, timerInterval;
+
+
+var pseudoLabel = document.querySelector("#pseudo");
+var themeLabel = document.querySelector("#theme");
+var difficultyLabel = document.querySelector("#difficulty");
+
+var pseudo = localStorage.getItem("pseudo");
+var theme = localStorage.getItem("theme");
+var difficulty = localStorage.getItem("difficulty");
+
+pseudoLabel.innerHTML = `Pseudo: ${pseudo}`;
+themeLabel.innerHTML = `Theme: ${theme}`;
+difficultyLabel.innerHTML = `Difficulté: ${difficulty}`;
+
+window.addEventListener(
+    "keydown",
+    function (e) {
+        if (
+            ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(
+                e.code
+            ) > -1
+        ) {
+            e.preventDefault();
+        }
+    },
+    false
+);
+
+
 
 function generateGrid() {
     const grid = document.querySelectorAll(".grille")[0];
@@ -73,8 +103,8 @@ function moveIndex() {
     if (direction == "right") {
 
         rightBoxes.forEach(element => {
-            if(!breakRight){
-                direction="left"
+            if (!breakRight) {
+                direction = "left"
                 setIndexNextLine();
                 breakRight = true
             }
@@ -83,21 +113,21 @@ function moveIndex() {
         });
     }
 
-    if(direction=="left"){
-        leftBoxes.forEach(element => { 
-        if(!breakLeft){
-            direction="right"
-            setIndexNextLine();
-            breakLeft = true
-        }
-        element.classList.remove("alien")
+    if (direction == "left") {
+        leftBoxes.forEach(element => {
+            if (!breakLeft) {
+                direction = "right"
+                setIndexNextLine();
+                breakLeft = true
+            }
+            element.classList.remove("alien")
 
         });
     }
 
-    if(direction=="right"){
-        if(!breakRight && !breakLeft){
-            for(let i=0; i<mobs.length; i++){
+    if (direction == "right") {
+        if (!breakRight && !breakLeft) {
+            for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
                 if (box.getAttribute("data-left")) {
                     box.classList.remove("alien")
@@ -107,8 +137,8 @@ function moveIndex() {
         }
     }
 
-    if(direction=="left"){
-        if(!breakLeft &&!breakRight){
+    if (direction == "left") {
+        if (!breakLeft && !breakRight) {
 
             for (let i = 0; i < mobs.length; i++) {
                 let box = document.querySelectorAll(".grille div")[mobs[i]]
@@ -130,6 +160,8 @@ function moveMobs() {
 generateGrid();
 addMobs();
 addShip();
+startTimer();
+
 let allDiv = document.querySelectorAll(".grille div")
 
 
@@ -268,19 +300,21 @@ window.addEventListener('keyup', (event) => {
     }
 })
 function end() {
+    stopTimer();
 
     var pop = document.querySelectorAll(".pop-up-end")[0];
     var popTitle = document.querySelectorAll(".pop-up-title")[0];
     var popImg = document.getElementById("img-pop-up")
 
+
     if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
-        popImg.setAttribute("src","../ressources/lose.gif")
+        popImg.setAttribute("src", "../ressources/lose.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "OOOOOOH TROP NUL "
         return true;
     }
     else if (mobs.length === 0) {
-        popImg.setAttribute("src","../ressources/victory.gif")
+        popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
         return true;
@@ -291,8 +325,50 @@ function game(){
     moveMobs();
     endGame = end();  
     if(endGame){
+        
+    
+        var score = { "pseudo": pseudo, "theme": theme, "difficulty": difficulty, "scoreVal": elapsedTime }
+    
+        var scores = localStorage.getItem("allScores");
+    
+        if (!scores) {
+            scores = []
+            scores.push(score)
+            localStorage.setItem("allScores", scores)
+        }
+        else {
+            scores.push(score);
+            localStorage.setItem("allScores", scores)
+        }
         clearInterval(gameInterval);
-    } 
+    }
+}
+
+function updateChrono() {
+    var currentTime = Date.now() - startTime;
+    var minutes = Math.floor(currentTime / 60000);
+    var seconds = Math.floor((currentTime % 60000) / 1000);
+    var milliseconds = Math.floor((currentTime % 1000) / 10);
+
+    minutes = (minutes < 10 ? "0" : "") + minutes.toString();
+    seconds = (seconds < 10 ? "0" : "") + seconds.toString();
+    milliseconds = (milliseconds < 10 ? "0" : "") + milliseconds.toString();
+
+    document.getElementById("chrono").innerHTML = minutes + ":" + seconds + ":" + milliseconds;
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    endTime = Date.now();
+}
+
+function startTimer() {
+    elapsedTime = 0;
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function () {
+        elapsedTime = Date.now() - startTime;
+        updateChrono(elapsedTime);
+    }, 10);
 }
 
 gameInterval = setInterval(game,1000)

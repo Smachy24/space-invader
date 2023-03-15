@@ -17,12 +17,14 @@
             <input type="text" name="pseudo" id="pseudo" placeholder="Entrez votre pseudo..">
             <p>Difficulté</p>
             <select id="diffilculty-select">
+                <option value="">-----</option>
                 <option value="easy">Facile</option>
                 <option value="medium">Moyen</option>
                 <option value="hard">Difficile</option>
             </select>
             <p>Themes</p>
             <select id="theme-select">
+                <option value="">-----</option>
                 <option value="aliens">Aliens</option>
                 <option value="pokemon">Pokemon</option>
                 <option value="clown">Clown</option>
@@ -31,12 +33,14 @@
                 <a href="../index.html" class="back-button">
                     RETOUR
                 </a>
-                <a href="game.html" onclick=""> <!-- ajouter la fonction pour récupérer les infos des inputs ici -->
+                <a href="#" onclick="if (getInfo()) { window.location.href = 'http://127.0.0.1:5500/pages/game.html'; }">
                     VALIDER
-                </a>
+                  </a>
             </div>
         </div>
     </div>
+
+    <script src="../scripts/menu.js"></script>
 </body>
 
 </html>
