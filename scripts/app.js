@@ -66,7 +66,6 @@ function setMobs() {
     return aliens
 }
 
-
 function addMobs() {
 
     mobs.forEach(index => {
@@ -213,41 +212,41 @@ function moveDown() {
 
 }
 
-function loadShoot(){
-    laserPos = shipPos-20
-    if(allDiv[laserPos].className=="alien"){
-        destroyMob(laserPos+20);
+function loadShoot() {
+    laserPos = shipPos - 20
+    if (allDiv[laserPos].className == "alien") {
+        destroyMob(laserPos + 20);
         return true;
     }
     allDiv[laserPos].classList.add("laser")
 }
 
-function moveShootUp(){
-    if(allDiv[laserPos-20].className=="alien"){
+function moveShootUp() {
+    if (allDiv[laserPos - 20].className == "alien") {
         destroyMob(laserPos);
         return true;
     }
     allDiv[laserPos].classList.remove("laser")
-    laserPos-=20
-    if(laserPos>=0){
+    laserPos -= 20
+    if (laserPos >= 0) {
         allDiv[laserPos].classList.add("laser")
-        
+
     }
-    
+
 }
 
 let lastShootTime = 0;
 const cooldown = 500;
 
-function destroyMob(laserPos){
-    mobs.splice(mobs.indexOf(laserPos-20),1) // On retirer l'alien touché
-    allDiv[laserPos-20].classList.remove("alien")
-    allDiv[laserPos-20].classList.add("boom")
-    setTimeout(()=>{
+function destroyMob(laserPos) {
+    mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
+    allDiv[laserPos - 20].classList.remove("alien")
+    allDiv[laserPos - 20].classList.add("boom")
+    setTimeout(() => {
         allDiv[laserPos].classList.remove("laser")
-        allDiv[laserPos-20].classList.remove("boom")
-    },100)
-                
+        allDiv[laserPos - 20].classList.remove("boom")
+    }, 100)
+
 }
 
 function shoot() {
@@ -257,24 +256,24 @@ function shoot() {
     }
     lastShootTime = currentTime;
 
-    if(loadShoot()){
+    if (loadShoot()) {
         return;
     }
-    
-    
-    const interval = setInterval(function(){
-        
-        if(moveShootUp()){
+
+
+    const interval = setInterval(function () {
+
+        if (moveShootUp()) {
             clearInterval(interval)
         }
 
-        if(laserPos<20){
+        if (laserPos < 20) {
             allDiv[laserPos].classList.remove("laser")
             clearInterval(interval)
             return;
         }
-        
-    },50)
+
+    }, 50)
 }
 
 window.addEventListener('keyup', (event) => {
@@ -299,44 +298,52 @@ function end() {
     var pop = document.querySelectorAll(".pop-up-end")[0];
     var popTitle = document.querySelectorAll(".pop-up-title")[0];
     var popImg = document.getElementById("img-pop-up")
+    var popScore = document.getElementById("pop-up-score");
 
+    let displayScore = formatTime(elapsedTime);
 
     if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
         popImg.setAttribute("src", "../ressources/lose.gif")
         pop.style.display = "flex";
+        popScore.innerHTML = displayScore;
         popTitle.innerHTML = "OOOOOOH TROP NUL "
         stopTimer();
+        clearInterval(gameInterval)
     }
     else if (mobs.length === 0) {
         popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
+        popScore.innerHTML = displayScore;
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
-    
-        var score = { pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }
-    
-        // var scores = localStorage.getItem("allScores");
-    
-        
-        
-        localStorage.setItem("allScores", score)
- 
-       
+
         stopTimer();
+        clearInterval(gameInterval)
+        var scores = JSON.parse(localStorage.getItem("allScores")) || []; // si undefined valeur pas défaut empty
+        var score = { pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }
+        scores.push(JSON.stringify(score));
+        localStorage.setItem("allScores", JSON.stringify(scores))
     }
+
 }
 
-
-function updateChrono() {
-    var currentTime = Date.now() - startTime;
-    var minutes = Math.floor(currentTime / 60000);
-    var seconds = Math.floor((currentTime % 60000) / 1000);
-    var milliseconds = Math.floor((currentTime % 1000) / 10);
+function formatTime(timeToFormat) {
+    var minutes = Math.floor(timeToFormat / 60000);
+    var seconds = Math.floor((timeToFormat % 60000) / 1000);
+    var milliseconds = Math.floor((timeToFormat % 1000) / 10);
 
     minutes = (minutes < 10 ? "0" : "") + minutes.toString();
     seconds = (seconds < 10 ? "0" : "") + seconds.toString();
     milliseconds = (milliseconds < 10 ? "0" : "") + milliseconds.toString();
 
-    document.getElementById("chrono").innerHTML = minutes + ":" + seconds + ":" + milliseconds;
+    var time = minutes + ":" + seconds + ":" + milliseconds;
+
+    return time;
+}
+
+
+function updateChrono() {
+    var currentTime = Date.now() - startTime;
+    document.getElementById("chrono").innerHTML = formatTime(currentTime);;
 }
 
 function stopTimer() {
@@ -354,13 +361,10 @@ function startTimer() {
 }
 
 
-function game(){
+function game() {
     moveMobs();
-    endGame = end();  
-    if(endGame){
-        clearInterval(gameInterval);
-    }
+    end();
 }
 
 
-gameInterval = setInterval(game,1000)
+gameInterval = setInterval(game, 1000)
