@@ -267,12 +267,7 @@ function shoot() {
         if(moveShootUp()){
             clearInterval(interval)
         }
-        // if(laserPos>20){
-        //     if(allDiv[laserPos-20].className=="alien"){
-        //         destroyMob(laserPos);
-        //         clearInterval(interval)
-        //     }
-        // }
+
         if(laserPos<20){
             allDiv[laserPos].classList.remove("laser")
             clearInterval(interval)
@@ -311,21 +306,11 @@ function end() {
         popImg.setAttribute("src", "../ressources/lose.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "OOOOOOH TROP NUL "
-        return true;
     }
     else if (mobs.length === 0) {
         popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
-        return true;
-    }
-}
-
-function game(){
-    moveMobs();
-    endGame = end();  
-    if(endGame){
-        
     
         var score = { "pseudo": pseudo, "theme": theme, "difficulty": difficulty, "scoreVal": elapsedTime }
     
@@ -340,9 +325,9 @@ function game(){
             scores.push(score);
             localStorage.setItem("allScores", scores)
         }
-        clearInterval(gameInterval);
     }
 }
+
 
 function updateChrono() {
     var currentTime = Date.now() - startTime;
@@ -370,5 +355,15 @@ function startTimer() {
         updateChrono(elapsedTime);
     }, 10);
 }
+
+
+function game(){
+    moveMobs();
+    endGame = end();  
+    if(endGame){
+        clearInterval(gameInterval);
+    }
+}
+
 
 gameInterval = setInterval(game,1000)
