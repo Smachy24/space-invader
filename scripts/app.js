@@ -214,8 +214,13 @@ function moveDown() {
 
 }
 
-function loadShoot() {
+function loadShoot(position) {
     laserPos = shipPos - 20
+    if(position){
+        laserPos=position
+    }
+    console.log(laserPos)
+    
     if (allDiv[laserPos].className == theme) {
         destroyMob(laserPos + 20);
         return true;
@@ -262,7 +267,7 @@ let powerInterval = null;
 let shootBomb = false
 
 function loadPower(alienPos){
-    const powerUp = ["power-bomb", "power-double", "power-speed"]
+    const powerUp = ["power-bomb", "power-speed"]
     powerPos = alienPos
     while(powerPos<Math.max.apply(Math, mobs)){
         powerPos+=20
@@ -287,7 +292,9 @@ function moveDownPower(){
                     powerSpeed();
                     break;
                 case "power-double":
-                    console.log("DOUBLE");
+                    allDiv[powerPos].classList.remove(powerClass)
+                    shoot(231);
+                    console.log("POWER DOOUBLE")
                     break;
             }
             clearInterval(powerInterval)
@@ -307,7 +314,7 @@ function moveDownPower(){
 function dropPower(alienPos){
     let dropLuck = Math.floor(Math.random() * 10)
     console.log(dropLuck)
-    if(dropLuck==7){
+    if(dropLuck==1){
         loadPower(alienPos)
         powerInterval = setInterval(moveDownPower,1000)
     }
@@ -315,10 +322,6 @@ function dropPower(alienPos){
 }
 
 function powerDoubleLaser(){
-
-}
-
-function powerBomb(){
 
 }
 
@@ -333,14 +336,7 @@ function powerSpeed(){
 
 function destroyMob(laserPos) {
     
-    if(shootBomb==true){
-        console.log(allDiv[laserPos]);
-        console.log(allDiv[laserPos].className);
-        if(allDiv[laserPos].className == theme){
-            console.log("AA")
-        }
-        
-    }
+    
     
     if(allDiv[laserPos - 20].className == theme){
         
@@ -355,14 +351,14 @@ function destroyMob(laserPos) {
     }
 }
 
-function shoot() {
+function shoot(position) {
     const currentTime = Date.now();
     if (currentTime - lastShootTime < cooldown) {
         return;
     }
     lastShootTime = currentTime;
 
-    if (loadShoot()) {
+    if (loadShoot(position)) {
         return;
     }
 
@@ -397,8 +393,6 @@ window.addEventListener('keyup', (event) => {
     }
     if (event.code === "Space") {
             shoot();
-       
-        
     }
 })
 function end() {
