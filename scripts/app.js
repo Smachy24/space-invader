@@ -4,7 +4,7 @@ let direction = "right"
 let shipPos = 230;
 let laserPos = shipPos;
 var startTime, endTime, elapsedTime, timerInterval;
-
+let speedMobs
 
 var pseudoLabel = document.querySelector("#pseudo");
 var themeLabel = document.querySelector("#theme");
@@ -33,6 +33,21 @@ window.addEventListener(
 );
 
 document.body.style.background = `url("../ressources/${theme}.jpg")`
+
+switch (difficulty) {
+    case 'easy':
+        speedMobs = 1300;
+        break;
+    case 'medium':
+        speedMobs = 800;
+        break;
+    case 'hard':
+        speedMobs = 500;
+        break;
+    default:
+        console.log("Difficulté non reconnue.");
+        break;
+}
 
 
 
@@ -369,4 +384,4 @@ function game() {
 }
 
 
-gameInterval = setInterval(game, 1000)
+gameInterval = setInterval(game, speedMobs)
