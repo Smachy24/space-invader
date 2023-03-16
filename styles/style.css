@@ -91,6 +91,23 @@ h3 {
     background-position: center;
     background-size: contain;
 }
+
+.power-double {
+    background: url(../ressources/power-double.png);
+    background-position: center;
+    background-size: contain;
+}
+.power-bomb {
+    background: url(../ressources/power-bomb.png);
+    background-position: center;
+    background-size: contain;
+}
+.power-speed {
+    background: url(../ressources/power-speed.png);
+    background-position: center;
+    background-size: contain;
+}
+
 a{
     transition: all 500ms ease-in-out;
 }

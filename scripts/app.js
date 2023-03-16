@@ -238,16 +238,90 @@ function moveShootUp() {
 }
 
 let lastShootTime = 0;
-const cooldown = 500;
+let cooldown = 500;
+
+let powerPos = null
+let powerInterval = null;
+
+function loadPower(alienPos){
+    const powerUp = ["power-bomb", "power-double", "power-speed"]
+    powerPos = alienPos
+    while(powerPos<Math.max.apply(Math, mobs)){
+        powerPos+=20
+    }
+    allDiv[powerPos].classList.add(powerUp[Math.floor(Math.random()*powerUp.length)]) 
+}
+
+function moveDownPower(){
+    powerClass = allDiv[powerPos].className
+    if(powerPos<219){
+        if(powerPos+20==shipPos){
+            console.log("VAISSEAU")
+            console.log(powerClass);
+            switch(powerClass){
+                
+                case "power-bomb":
+                    console.log("BOMBE");
+                    break;
+                case "power-speed":
+                    allDiv[powerPos].classList.remove(powerClass)
+                    powerSpeed();
+                    break;
+                case "power-double":
+                    console.log("DOUBLE");
+                    break;
+            }
+            clearInterval(powerInterval)
+        }
+        else{
+            allDiv[powerPos].classList.remove(powerClass)
+            powerPos+=20
+            allDiv[powerPos].classList.add(powerClass)
+        }
+    }
+    else{
+        allDiv[powerPos].classList.remove(powerClass)
+        clearInterval(powerInterval)
+    }   
+}
+
+function dropPower(alienPos){
+    let dropLuck = Math.floor(Math.random() * 10)
+    if(dropLuck==7){
+        loadPower(alienPos)
+        powerInterval = setInterval(moveDownPower,1000)
+    }
+    
+}
+
+function powerDoubleLaser(){
+
+}
+
+function powerBomb(){
+
+}
+
+function powerSpeed(){
+    cooldown=300
+    setTimeout(() => {
+        cooldown=500
+        console.log("SPEED 5s");
+    }, 5000);
+    
+}
 
 function destroyMob(laserPos) {
+    
     mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
     allDiv[laserPos - 20].classList.remove(theme)
     allDiv[laserPos - 20].classList.add("boom")
     setTimeout(() => {
         allDiv[laserPos].classList.remove("laser")
         allDiv[laserPos - 20].classList.remove("boom")
+        dropPower(laserPos-20)
     }, 100)
+    
 
 }
 
