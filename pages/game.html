@@ -19,11 +19,11 @@
       <li class="music-window">
       <div class="pop-up-music">
         <div class="wrapper-mute-button">
-          <button>Mute</button>
+          <button id="mute-button" onclick="muteAudio()">Mute</button>
         </div>
         <div class="music-infos">
           <p class="music-title">MUSIC TITLE</p>
-          <progress value="20" min="0" max="100" id="music-time"></progress>
+          <progress value="0" min="0" max="100" id="music-time" onchange="seekTo()"></progress>
           <div class="timestamp-music">
             <p id="timeElapsedMusic">00:00</p>
             <p id="durationMusic">00:00</p>
@@ -31,9 +31,9 @@
         </div>
         <div class="music-player">
           <div class="music-buttons">
-            <img src="../ressources/skip-previous.svg" alt="previous">
-            <img src="../ressources/play.svg" alt="play/stop button">
-            <img src="../ressources/skip-next.svg" alt="next">
+            <img src="../ressources/skip-previous.svg" alt="previous" class="skip-prev" onclick="prevTrack()">
+            <img src="../ressources/play.svg" alt="play/stop button" class="playpause" onclick="playpauseTrack()">
+            <img src="../ressources/skip-next.svg" alt="next" class="skip-next" onclick="nextTrack()">
           </div>
         </div>
       </div>

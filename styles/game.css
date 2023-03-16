@@ -179,11 +179,6 @@ li {
     height: 40px;
 }
 
-.wrapper-mute-button{
-    position: relative;
-    height: 100%;
-    width: 100%;
-}
 
 .wrapper-mute-button button{
     position: absolute;
