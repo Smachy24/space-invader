@@ -224,16 +224,32 @@ function loadShoot() {
 }
 
 function moveShootUp() {
-    if (allDiv[laserPos - 20].className == theme) {
-        destroyMob(laserPos);
-        return true;
-    }
-    allDiv[laserPos].classList.remove("laser")
-    laserPos -= 20
-    if (laserPos >= 0) {
-        allDiv[laserPos].classList.add("laser")
 
-    }
+        if (allDiv[laserPos - 20].className == theme) {
+            if(shootBomb==true){
+                const centerMob = laserPos ;
+                destroyMob(centerMob)
+                destroyMob(centerMob-1)
+                destroyMob(centerMob+1)
+                destroyMob(centerMob-20)
+                destroyMob(centerMob+20)
+                shootBomb=false
+                return true;
+            }
+            else{
+                destroyMob(laserPos);
+            return true;
+            }
+            
+        }
+        allDiv[laserPos].classList.remove("laser")
+        laserPos -= 20
+        if (laserPos >= 0) {
+            allDiv[laserPos].classList.add("laser")
+    
+        }
+    
+    
 
 }
 
@@ -242,6 +258,8 @@ let cooldown = 500;
 
 let powerPos = null
 let powerInterval = null;
+
+let shootBomb = false
 
 function loadPower(alienPos){
     const powerUp = ["power-bomb", "power-double", "power-speed"]
@@ -261,7 +279,8 @@ function moveDownPower(){
             switch(powerClass){
                 
                 case "power-bomb":
-                    console.log("BOMBE");
+                    allDiv[powerPos].classList.remove(powerClass)
+                    shootBomb = true
                     break;
                 case "power-speed":
                     allDiv[powerPos].classList.remove(powerClass)
@@ -287,6 +306,7 @@ function moveDownPower(){
 
 function dropPower(alienPos){
     let dropLuck = Math.floor(Math.random() * 10)
+    console.log(dropLuck)
     if(dropLuck==7){
         loadPower(alienPos)
         powerInterval = setInterval(moveDownPower,1000)
@@ -313,16 +333,26 @@ function powerSpeed(){
 
 function destroyMob(laserPos) {
     
-    mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
-    allDiv[laserPos - 20].classList.remove(theme)
-    allDiv[laserPos - 20].classList.add("boom")
-    setTimeout(() => {
-        allDiv[laserPos].classList.remove("laser")
-        allDiv[laserPos - 20].classList.remove("boom")
-        dropPower(laserPos-20)
-    }, 100)
+    if(shootBomb==true){
+        console.log(allDiv[laserPos]);
+        console.log(allDiv[laserPos].className);
+        if(allDiv[laserPos].className == theme){
+            console.log("AA")
+        }
+        
+    }
     
-
+    if(allDiv[laserPos - 20].className == theme){
+        
+        mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
+        allDiv[laserPos - 20].classList.remove(theme)
+        allDiv[laserPos - 20].classList.add("boom")
+        setTimeout(() => {
+            allDiv[laserPos].classList.remove("laser")
+            allDiv[laserPos - 20].classList.remove("boom")
+            dropPower(laserPos-20)
+        }, 100)
+    }
 }
 
 function shoot() {
@@ -366,7 +396,9 @@ window.addEventListener('keyup', (event) => {
         moveDown();
     }
     if (event.code === "Space") {
-        shoot();
+            shoot();
+       
+        
     }
 })
 function end() {
