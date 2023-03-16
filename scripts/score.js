@@ -2,11 +2,10 @@ var scores = localStorage.getItem("allScores");
 scores = JSON.parse(scores)
 
 
-scores.sort(function (a, b) {
-    return b.scoreVal - a.scoreVal;
-});
+scores.sort((a, b) => JSON.parse(a).scoreVal - JSON.parse(b).scoreVal);
 
 var topScores = scores.slice(0, 10);
+console.log(topScores);
 
 var ul = document.querySelector("ul");
 for (var i = 0; i < topScores.length; i++) {
