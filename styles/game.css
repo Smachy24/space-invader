@@ -72,6 +72,7 @@ nav li {
     color: rgb(255, 255, 255);
     cursor: pointer;
 }
+
 .bottom-links a:hover {
     color: rgb(6, 10, 222);
     cursor: pointer;
@@ -88,32 +89,104 @@ nav li {
     font-size: 30px;
     width: 50%;
     height: 50%;
-    display: none;     /* changer ça en js display flex à la fin de la partie ou cliquer abandonner */
+    display: none;
+    /* changer ça en js display flex à la fin de la partie ou cliquer abandonner */
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
 }
-.pop-up-end *{
+
+.pop-up-end * {
     margin: 20px 0px;
 }
 
-.pop-up-title{
+.pop-up-title {
     font-size: 50px;
 }
 
-body{
+body {
     background-color: black;
 }
 
-p{
+p {
     color: white;
 }
 
-li{
+li {
     color: white;
 }
 
-#img-pop-up{
+#img-pop-up {
     width: 70%;
     max-width: 300px;
+}
+
+.pop-up-music {
+     position: absolute;
+    top:0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgba(5, 5, 5, 0.687);
+    font-size: 14px;
+    height: 20vh;
+    padding: 0px 50px;
+    width: fit-content;
+}
+
+.music-title{
+    font-size: 16px;
+}
+
+.music-infos {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.timestamp-music {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.music-player {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.music-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.music-buttons img{
+    width: 40px;
+    height: 40px;
+}
+
+.wrapper-mute-button{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.wrapper-mute-button button{
+    position: absolute;
+    top:5px;
+    right: 5px;
 }
