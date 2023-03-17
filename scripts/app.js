@@ -48,11 +48,11 @@ let track_list = [
     },
     {
         name: "One Piece",
-        path: "../ressources/One Piece – Opening.mp3"
+        path: "../ressources/onepiece-sound.mp3"
     },
     {
         name: "Pokemon",
-        path: "../ressources/Pokémon Opening.mp3"
+        path: "../ressources/pokemon-sound.mp3"
     },
 ];
 
