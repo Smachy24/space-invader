@@ -448,15 +448,19 @@ let cooldown = 800;
 
 function destroyMob(laserPos) {
     /* Destroy mob : array and class of the div */
-    mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retire l'alien touché
-    allDiv[laserPos - 20].classList.remove(theme)
-    allDiv[laserPos - 20].classList.add("boom")
-    var audio = new Audio('../ressources/EXPLOSION.mp3'); // EXPLOSIOOOOOOOOON
-    audio.play();
-    setTimeout(() => {
-        allDiv[laserPos].classList.remove(laser)
-        allDiv[laserPos - 20].classList.remove("boom")
-    }, 100)
+    if(allDiv[laserPos - 20].className == theme){
+        
+        mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
+        allDiv[laserPos - 20].classList.remove(theme)
+        allDiv[laserPos - 20].classList.add("boom")
+        var audio = new Audio('../ressources/EXPLOSION.mp3'); // EXPLOSIOOOOOOOOON
+        audio.play();
+        setTimeout(() => {
+            allDiv[laserPos].classList.remove("laser")
+            allDiv[laserPos - 20].classList.remove("boom")
+            dropPower(laserPos-20)
+        }, 100)
+    }
 }
 
 function win() {
@@ -544,7 +548,8 @@ function moveDownPower() {
 function dropPower(alienPos) {
     /* Drop power up */
     if(!hasPower){
-        let dropLuck = Math.floor(Math.random() * 10)
+        let dropLuck = Math.floor(Math.random() * 2)
+        console.log(dropLuck)
         if (dropLuck == 1) {
             loadPower(alienPos)
             powerInterval = setInterval(moveDownPower, 200)
