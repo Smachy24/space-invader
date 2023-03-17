@@ -197,27 +197,20 @@ function moveIndex() {
 // music part
 
 function loadTrack(track_index) {
-    // Clear the previous seek timer
     clearInterval(updateTimer);
     resetValues();
 
-    // Load a new track
     curr_track.src = track_list[track_index].path;
     curr_track.load();
 
     track_name.textContent = track_list[track_index].name;
 
-    // Set an interval of 1000 milliseconds
-    // for updating the seek slider
     updateTimer = setInterval(seekUpdate, 1000);
 
-    // Move to the next track if the current finishes playing
-    // using the 'ended' event
     curr_track.addEventListener("ended", nextTrack);
 }
 
 
-// Function to reset all values to their default
 function resetValues() {
     curr_time.textContent = "00:00";
     total_duration.textContent = "00:00";
@@ -226,62 +219,41 @@ function resetValues() {
 
 
 function playpauseTrack() {
-    // Switch between playing and pausing
-    // depending on the current state
     console.log("test");
     if (!isPlaying) playTrack();
     else pauseTrack();
 }
 
 function playTrack() {
-    // Play the loaded track
     curr_track.play();
     isPlaying = true;
-
-    // Replace icon with the pause icon
     playpause_btn.setAttribute("src", "../ressources/pause.svg")
 }
 
 function pauseTrack() {
-    // Pause the loaded track
     curr_track.pause();
     isPlaying = false;
-
-    // Replace icon with the play icon
     playpause_btn.setAttribute("src", "../ressources/play.svg")
 }
 
 function nextTrack() {
-    // Go back to the first track if the
-    // current one is the last in the track list
     if (track_index < track_list.length - 1)
         track_index += 1;
     else track_index = 0;
-
-    // Load and play the new track
     loadTrack(track_index);
     playTrack();
 }
 
 function prevTrack() {
-    // Go back to the last track if the
-    // current one is the first in the track list
     if (track_index > 0)
         track_index -= 1;
     else track_index = track_list.length - 1;
-
-    // Load and play the new track
     loadTrack(track_index);
     playTrack();
 }
 
 function seekTo() {
-    // Calculate the seek position by the
-    // percentage of the seek slider
-    // and get the relative duration to the track
     seekto = curr_track.duration * (seek_slider.value / 100);
-
-    // Set the current track position to the calculated seek position
     curr_track.currentTime = seekto;
 }
 
@@ -428,6 +400,20 @@ function destroyMob(laserPos) {
 
 }
 
+function win() {
+    var audio = new Audio('../ressources/win.mp3');
+    pauseTrack()
+    audio.play();
+}
+
+function loose(params) {
+    var audio = new Audio('../ressources/loose.mp3');
+    var audio2 = new Audio('../ressources/loose2.mp3');
+    pauseTrack()
+    audio.play();
+    audio2.play();  
+}
+
 function shootSound() {
     // on créer un nouvel élément audio avec comme source le son
     var audio = new Audio('../ressources/blaster.mp3');
@@ -496,12 +482,14 @@ function end() {
         popTitle.innerHTML = "OOOOOOH TROP NUL "
         stopTimer();
         clearInterval(gameInterval)
+        loose();
     }
     else if (mobs.length === 0) {
         popImg.setAttribute("src", "../ressources/victory.gif")
         pop.style.display = "flex";
         popScore.innerHTML = displayScore;
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
+        win();
 
         stopTimer();
         clearInterval(gameInterval);
