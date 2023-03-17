@@ -99,9 +99,8 @@ switch (difficulty) {
         break;
 }
 
-
-
 function generateGrid() {
+    /*Generate grid with all divs */
     const grid = document.querySelectorAll(".grille")[0];
     for (let i = 0; i < 12; i++) {
         let element = document.createElement("div");
@@ -121,6 +120,8 @@ function generateGrid() {
     addMobs();
 }
 function setMobs() {
+    /*Push first mobs in array of mobs
+    @return: array of mobs*/
     aliens = []
     for (let first = 1; first < 13; first++) {
         aliens.push(first)
@@ -135,6 +136,7 @@ function setMobs() {
 }
 
 function addMobs() {
+    /* Set class to mob divs*/
     mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
         box.classList.add(theme)
@@ -143,24 +145,25 @@ function addMobs() {
 }
 
 function clearMobs() {
+    /*Remove mob class to each mob */
     mobs.forEach(index => {
         let box = document.querySelectorAll(".grille div")[index]
         if (!box.getAttribute("data-right") && !box.getAttribute("data-left")) {
             box.classList.remove(theme)
         }
-
     })
 }
 
 function setIndexNextLine() {
+    /* Add 20 to each mob*/
     for (let i = 0; i < mobs.length; i++) {
         mobs[i] += 20
     }
 }
 
 function moveIndex() {
+    /* Move each mob */
     let rightBoxes, leftBoxes;
-
     let breakRight = false;
     let breakLeft = false;
     rightBoxes = document.querySelectorAll(`div[data-right].${theme}`)
@@ -175,7 +178,6 @@ function moveIndex() {
                 breakRight = true
             }
             element.classList.remove(theme)
-
         });
     }
 
@@ -220,46 +222,52 @@ function moveIndex() {
 // music part
 
 function loadTrack(track_index) {
+    /* Load music
+    @param track_index : music index */
     clearInterval(updateTimer);
     resetValues();
 
     curr_track.src = track_list[track_index].path;
     curr_track.load();
-
     track_name.textContent = track_list[track_index].name;
-
     updateTimer = setInterval(seekUpdate, 1000);
-
     curr_track.addEventListener("ended", nextTrack);
 }
 
-
 function resetValues() {
+    /*Reset music value */
     curr_time.textContent = "00:00";
     total_duration.textContent = "00:00";
     seek_slider.value = 0;
 }
 
-
 function playpauseTrack() {
-    console.log("test");
-    if (!isPlaying) playTrack();
-    else pauseTrack();
+    /* Play and pause music */
+
+    if (!isPlaying){
+        playTrack();
+    } 
+    else {
+        pauseTrack();
+    }
 }
 
 function playTrack() {
+    /* Play music */
     curr_track.play();
     isPlaying = true;
     playpause_btn.setAttribute("src", "../ressources/pause.svg")
 }
 
 function pauseTrack() {
+    /* Pause music */
     curr_track.pause();
     isPlaying = false;
     playpause_btn.setAttribute("src", "../ressources/play.svg")
 }
 
 function nextTrack() {
+    /* Change music to next music */
     if (track_index < track_list.length - 1)
         track_index += 1;
     else track_index = 0;
@@ -268,6 +276,7 @@ function nextTrack() {
 }
 
 function prevTrack() {
+    /* Change music to previous */
     if (track_index > 0)
         track_index -= 1;
     else track_index = track_list.length - 1;
@@ -275,12 +284,8 @@ function prevTrack() {
     playTrack();
 }
 
-function seekTo() {
-    seekto = curr_track.duration * (seek_slider.value / 100);
-    curr_track.currentTime = seekto;
-}
-
 function muteAudio() {
+    /* Mute music */
     let muteButton = document.getElementById("mute-button")
     if (curr_track.volume != 0) {
         curr_track.volume = 0;
@@ -293,6 +298,7 @@ function muteAudio() {
 }
 
 function seekUpdate() {
+    /*Update music duration bar */
     let seekPosition = 0;
 
     // Check if the current track duration is a legible number
@@ -320,6 +326,7 @@ function seekUpdate() {
 
 
 function moveMobs() {
+    /* Move mobs in the grid */
     clearMobs();
     moveIndex()
     addMobs();
@@ -332,30 +339,31 @@ startTimer();
 // Load the first track in the tracklist
 loadTrack(track_index);
 
-
 let allDiv = document.querySelectorAll(".grille div")
 
-
 function addShip() {
+    /*Add ship to the grid */
     let box = document.querySelectorAll(".grille div")[shipPos];
     box.classList.add("tireur")
 }
 
 function clearShip() {
+    /*Remove ship of the grid */
     allDiv[shipPos].classList.remove("tireur")
 }
 
 function moveLeft() {
+    /* Move ship to left */
 
     if (!allDiv[shipPos].getAttribute('data-left')) {
         clearShip();
         shipPos -= 1;
         allDiv[shipPos].classList.add("tireur")
-
     }
 }
 
 function moveRight() {
+    /*Move ship to right */
     if (!allDiv[shipPos].getAttribute('data-right')) {
         clearShip();
         shipPos += 1;
@@ -364,32 +372,29 @@ function moveRight() {
 }
 
 function moveUp() {
-
+    /*Move ship to up */
     if (shipPos - 20 > 179) {
         clearShip();
         shipPos -= 20;
         allDiv[shipPos].classList.add("tireur")
     }
-
 }
 
 function moveDown() {
-
+    /*Move ship to down */
     if (shipPos + 20 < 240) {
         clearShip();
         shipPos += 20;
         allDiv[shipPos].classList.add("tireur")
     }
-
-
 }
 
 function loadShoot(position) {
+    /* Load shoot above ship*/
     laserPos = shipPos - 20
     if (position) {
         laserPos = position
     }
-
     if (allDiv[laserPos].className == theme) {
         destroyMob(laserPos + 20);
         return true;
@@ -398,6 +403,7 @@ function loadShoot(position) {
 }
 
 function moveShootUp() {
+    /* Move shoot one case above */
 
     try{
         if (allDiv[laserPos - 20].className == theme) {
@@ -415,7 +421,6 @@ function moveShootUp() {
                 destroyMob(laserPos);
                 return true;
             }
-    
         }
     }
     catch(e){
@@ -428,15 +433,13 @@ function moveShootUp() {
         allDiv[laserPos].classList.add(laser)
 
     }
-
-
-
 }
 
 let lastShootTime = 0;
 let cooldown = 800;
 
 function destroyMob(laserPos) {
+    /* Destroy mob : array and class of the div */
     mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retire l'alien touché
     allDiv[laserPos - 20].classList.remove(theme)
     allDiv[laserPos - 20].classList.add("boom")
@@ -446,16 +449,17 @@ function destroyMob(laserPos) {
         allDiv[laserPos].classList.remove(laser)
         allDiv[laserPos - 20].classList.remove("boom")
     }, 100)
-
 }
 
 function win() {
+    /* Music win */
     var audio = new Audio('../ressources/win.mp3');
     pauseTrack()
     audio.play();
 }
 
-function loose(params) {
+function loose() {
+    /*Music loose */
     var audio = new Audio('../ressources/loose.mp3');
     var audio2 = new Audio('../ressources/loose2.mp3');
     pauseTrack()
@@ -464,6 +468,7 @@ function loose(params) {
 }
 
 function shootSound() {
+    /* Play sound when shoot */
     // on créer un nouvel élément audio avec comme source le son
     var audio = new Audio('../ressources/blaster.mp3');
     // on le joue au moment du tir dans la fonction shoot()
@@ -471,13 +476,12 @@ function shootSound() {
 }
 
 
-
 let powerPos = null
 let powerInterval = null;
-
 let shootBomb = false
 
 function loadPower(alienPos) {
+    /*Load power up under mobs */
     hasPower=true
     const powerUp = ["power-bomb", "power-speed"]
     powerPos = alienPos
@@ -489,6 +493,7 @@ function loadPower(alienPos) {
 }
 
 function moveDownPower() {
+    /*Move power up down */
     powerClass = allDiv[powerPos].className
     if (powerPos < 219) {
         if (powerPos + 20 == shipPos ||powerPos+1== shipPos ||powerPos+1== shipPos) {
@@ -524,53 +529,32 @@ function moveDownPower() {
           } catch (error) {
             allDiv[powerPos].className="tireur"
           }
-       
         clearInterval(powerInterval)
     }
 }
 
 function dropPower(alienPos) {
+    /* Drop power up */
     if(!hasPower){
         let dropLuck = Math.floor(Math.random() * 10)
-        console.log(dropLuck)
         if (dropLuck == 1) {
             loadPower(alienPos)
             powerInterval = setInterval(moveDownPower, 200)
-        }
-        
+        } 
     }
-    
-
 }
 
-
 function powerSpeed() {
+    /* Speed power up */
     cooldown = 400
     setTimeout(() => {
         cooldown = 800
         console.log("SPEED 5s");
     }, 5000);
-
-}
-
-function destroyMob(laserPos) {
-
-
-
-    if (allDiv[laserPos - 20].className == theme) {
-
-        mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
-        allDiv[laserPos - 20].classList.remove(theme)
-        allDiv[laserPos - 20].classList.add("boom")
-        setTimeout(() => {
-            allDiv[laserPos].classList.remove(laser)
-            allDiv[laserPos - 20].classList.remove("boom")
-            dropPower(laserPos - 20)
-        }, 100)
-    }
 }
 
 function shoot(position) {
+    /* Shoot laser */
     shootSound(); // fonction pour le bruit lors du tir
     const currentTime = Date.now();
     if (currentTime - lastShootTime < cooldown) {
@@ -582,13 +566,11 @@ function shoot(position) {
         return;
     }
 
-
     const interval = setInterval(function () {
 
         if (moveShootUp()) {
             clearInterval(interval)
         }
-
         if (laserPos < 20) {
             allDiv[laserPos].classList.remove(laser)
             clearInterval(interval)
@@ -601,27 +583,32 @@ function shoot(position) {
 window.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {
         moveLeft();
+        playTrack();
     }
     if (event.key === "ArrowRight") {
         moveRight();
+        playTrack();
     }
     if (event.key === "ArrowUp") {
         moveUp();
+        playTrack();
     }
     if (event.key === "ArrowDown") {
         moveDown();
+        playTrack();
     }
     if (event.code === "Space") {
         shoot();
+        playTrack();
     }
 })
-function end() {
 
+function end() {
+    /*Function end game */
     var pop = document.querySelectorAll(".pop-up-end")[0];
     var popTitle = document.querySelectorAll(".pop-up-title")[0];
     var popImg = document.getElementById("img-pop-up")
     var popScore = document.getElementById("pop-up-score");
-
     let displayScore = formatTime(elapsedTime);
 
     if (mobs.includes(shipPos) || mobs.some((value) => value > 220)) {
@@ -647,14 +634,10 @@ function end() {
         scores.push(JSON.stringify(score));
         localStorage.setItem("allScores", JSON.stringify(scores))
     }
-
 }
 
-/* scores = ["{ pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }",];
-
-scores = "['{ pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }', ]"; */
-
 function formatTime(timeToFormat) {
+    /* Format time for the chrono */
     var minutes = Math.floor(timeToFormat / 60000);
     var seconds = Math.floor((timeToFormat % 60000) / 1000);
     var milliseconds = Math.floor((timeToFormat % 1000) / 10);
@@ -668,16 +651,18 @@ function formatTime(timeToFormat) {
     return time;
 }
 
-
 function updateChrono() {
+    /* Update chrono element */
     document.getElementById("chrono").innerHTML = formatTime(elapsedTime);
 }
 
 function stopTimer() {
+    /* Stop timer */
     clearInterval(timerInterval);
 }
 
 function startTimer() {
+    /*Start timer */
     elapsedTime = 0;
     startTime = Date.now() - elapsedTime;
     timerInterval = setInterval(function () {
@@ -686,12 +671,10 @@ function startTimer() {
     }, 10);
 }
 
-
 function game() {
+    /* Game function */
     moveMobs();
     end();
 }
 
-
 gameInterval = setInterval(game, speedMobs)
-
