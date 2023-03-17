@@ -87,9 +87,21 @@ h3 {
     background-size: contain;
 }
 .laser {
-    background: url(../ressources/lazer.png);
+    background: url(../ressources/laser/lazer.png);
     background-position: center;
     background-size: contain;
+}
+.fireball {
+    background: url(../ressources/laser/pokemon.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat:no-repeat ;
+}
+.hand {
+    background: url(../ressources/laser/onepiece.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat:no-repeat ;
 }
 
 .power-double {

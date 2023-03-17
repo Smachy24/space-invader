@@ -13,6 +13,7 @@ var difficultyLabel = document.querySelector("#difficulty");
 var pseudo = localStorage.getItem("pseudo");
 var theme = localStorage.getItem("theme");
 var difficulty = localStorage.getItem("difficulty");
+let laser;
 
 pseudoLabel.innerHTML = `Pseudo: ${pseudo}`;
 themeLabel.innerHTML = `Theme: ${theme}`;
@@ -58,6 +59,26 @@ window.addEventListener(
     },
     false
 );
+
+switch (theme) {
+    case 'alien':
+    
+        laser = "laser"
+
+        break;
+    case 'pokemon':
+        
+    laser = "fireball"
+
+        break;
+    case 'onepiece':
+        
+    laser = "hand"
+
+        break;
+    default:
+        break;
+}
 
 document.body.style.background = `url("../ressources/${theme}.jpg")`
 
@@ -363,45 +384,45 @@ function moveDown() {
 
 function loadShoot(position) {
     laserPos = shipPos - 20
-    if(position){
-        laserPos=position
+    if (position) {
+        laserPos = position
     }
     console.log(laserPos)
-    
+
     if (allDiv[laserPos].className == theme) {
         destroyMob(laserPos + 20);
         return true;
     }
-    allDiv[laserPos].classList.add("laser")
+    allDiv[laserPos].classList.add(laser)
 }
 
 function moveShootUp() {
 
-        if (allDiv[laserPos - 20].className == theme) {
-            if(shootBomb==true){
-                const centerMob = laserPos ;
-                destroyMob(centerMob)
-                destroyMob(centerMob-1)
-                destroyMob(centerMob+1)
-                destroyMob(centerMob-20)
-                destroyMob(centerMob+20)
-                shootBomb=false
-                return true;
-            }
-            else{
-                destroyMob(laserPos);
+    if (allDiv[laserPos - 20].className == theme) {
+        if (shootBomb == true) {
+            const centerMob = laserPos;
+            destroyMob(centerMob)
+            destroyMob(centerMob - 1)
+            destroyMob(centerMob + 1)
+            destroyMob(centerMob - 20)
+            destroyMob(centerMob + 20)
+            shootBomb = false
             return true;
-            }
-            
         }
-        allDiv[laserPos].classList.remove("laser")
-        laserPos -= 20
-        if (laserPos >= 0) {
-            allDiv[laserPos].classList.add("laser")
-    
+        else {
+            destroyMob(laserPos);
+            return true;
         }
-    
-    
+
+    }
+    allDiv[laserPos].classList.remove(laser)
+    laserPos -= 20
+    if (laserPos >= 0) {
+        allDiv[laserPos].classList.add(laser)
+
+    }
+
+
 
 }
 
@@ -415,7 +436,7 @@ function destroyMob(laserPos) {
     var audio = new Audio('../ressources/EXPLOSION.mp3'); // EXPLOSIOOOOOOOOON
     audio.play();
     setTimeout(() => {
-        allDiv[laserPos].classList.remove("laser")
+        allDiv[laserPos].classList.remove(laser)
         allDiv[laserPos - 20].classList.remove("boom")
     }, 100)
 
@@ -432,7 +453,7 @@ function loose(params) {
     var audio2 = new Audio('../ressources/loose2.mp3');
     pauseTrack()
     audio.play();
-    audio2.play();  
+    audio2.play();
 }
 
 function shootSound() {
@@ -443,29 +464,29 @@ function shootSound() {
 }
 
 
-    
+
 let powerPos = null
 let powerInterval = null;
 
 let shootBomb = false
 
-function loadPower(alienPos){
+function loadPower(alienPos) {
     const powerUp = ["power-bomb", "power-speed"]
     powerPos = alienPos
-    while(powerPos<Math.max.apply(Math, mobs)){
-        powerPos+=20
+    while (powerPos < Math.max.apply(Math, mobs)) {
+        powerPos += 20
     }
-    allDiv[powerPos].classList.add(powerUp[Math.floor(Math.random()*powerUp.length)]) 
+    allDiv[powerPos].classList.add(powerUp[Math.floor(Math.random() * powerUp.length)])
 }
 
-function moveDownPower(){
+function moveDownPower() {
     powerClass = allDiv[powerPos].className
-    if(powerPos<219){
-        if(powerPos+20==shipPos){
+    if (powerPos < 219) {
+        if (powerPos + 20 == shipPos) {
             console.log("VAISSEAU")
             console.log(powerClass);
-            switch(powerClass){
-                
+            switch (powerClass) {
+
                 case "power-bomb":
                     allDiv[powerPos].classList.remove(powerClass)
                     shootBomb = true
@@ -482,51 +503,51 @@ function moveDownPower(){
             }
             clearInterval(powerInterval)
         }
-        else{
+        else {
             allDiv[powerPos].classList.remove(powerClass)
-            powerPos+=20
+            powerPos += 20
             allDiv[powerPos].classList.add(powerClass)
         }
     }
-    else{
+    else {
         allDiv[powerPos].classList.remove(powerClass)
         clearInterval(powerInterval)
-    }   
+    }
 }
 
-function dropPower(alienPos){
+function dropPower(alienPos) {
     let dropLuck = Math.floor(Math.random() * 20)
     console.log(dropLuck)
-    if(dropLuck==1){
+    if (dropLuck == 1) {
         loadPower(alienPos)
-        powerInterval = setInterval(moveDownPower,200)
+        powerInterval = setInterval(moveDownPower, 200)
     }
-    
+
 }
 
 
-function powerSpeed(){
-    cooldown=300
+function powerSpeed() {
+    cooldown = 300
     setTimeout(() => {
-        cooldown=500
+        cooldown = 500
         console.log("SPEED 5s");
     }, 5000);
-    
+
 }
 
 function destroyMob(laserPos) {
-    
-    
-    
-    if(allDiv[laserPos - 20].className == theme){
-        
+
+
+
+    if (allDiv[laserPos - 20].className == theme) {
+
         mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
         allDiv[laserPos - 20].classList.remove(theme)
         allDiv[laserPos - 20].classList.add("boom")
         setTimeout(() => {
-            allDiv[laserPos].classList.remove("laser")
+            allDiv[laserPos].classList.remove(laser)
             allDiv[laserPos - 20].classList.remove("boom")
-            dropPower(laserPos-20)
+            dropPower(laserPos - 20)
         }, 100)
     }
 }
@@ -551,7 +572,7 @@ function shoot(position) {
         }
 
         if (laserPos < 20) {
-            allDiv[laserPos].classList.remove("laser")
+            allDiv[laserPos].classList.remove(laser)
             clearInterval(interval)
             return;
         }
@@ -573,7 +594,7 @@ window.addEventListener('keyup', (event) => {
         moveDown();
     }
     if (event.code === "Space") {
-            shoot();
+        shoot();
     }
 })
 function end() {
