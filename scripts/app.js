@@ -456,7 +456,7 @@ function destroyMob(laserPos) {
         var audio = new Audio('../ressources/EXPLOSION.mp3'); // EXPLOSIOOOOOOOOON
         audio.play();
         setTimeout(() => {
-            allDiv[laserPos].classList.remove("laser")
+            allDiv[laserPos].classList.remove(laser)
             allDiv[laserPos - 20].classList.remove("boom")
             dropPower(laserPos-20)
         }, 100)
@@ -548,7 +548,7 @@ function moveDownPower() {
 function dropPower(alienPos) {
     /* Drop power up */
     if(!hasPower){
-        let dropLuck = Math.floor(Math.random() * 2)
+        let dropLuck = Math.floor(Math.random() * 10)
         console.log(dropLuck)
         if (dropLuck == 1) {
             loadPower(alienPos)
