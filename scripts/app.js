@@ -46,6 +46,14 @@ let track_list = [
         name: "Space Invader",
         path: "../ressources/Teminite & MDK - Space Invaders.mp3"
     },
+    {
+        name: "One Piece",
+        path: "../ressources/One Piece – Opening.mp3"
+    },
+    {
+        name: "Pokemon",
+        path: "../ressources/Pokémon Opening.mp3"
+    },
 ];
 
 window.addEventListener(
