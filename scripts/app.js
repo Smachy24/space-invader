@@ -99,16 +99,15 @@ function generateGrid() {
 }
 function setMobs() {
     aliens = []
-    /*   for (let first = 1; first < 13; first++) {
-          aliens.push(first)
-      }
-      for (let second = 21; second < 33; second++) {
-          aliens.push(second)
-      }
-      for (let third = 41; third < 53; third++) {
-          aliens.push(third)
-      } */
-    aliens.push(1, 2)
+    for (let first = 1; first < 13; first++) {
+        aliens.push(first)
+    }
+    for (let second = 21; second < 33; second++) {
+        aliens.push(second)
+    }
+    for (let third = 41; third < 53; third++) {
+        aliens.push(third)
+    }
     return aliens
 }
 
@@ -286,12 +285,6 @@ function seekTo() {
     curr_track.currentTime = seekto;
 }
 
-function setVolume() {
-    // Set the volume according to the
-    // percentage of the volume slider set
-    curr_track.volume = volume_slider.value / 100;
-}
-
 function muteAudio() {
     let muteButton = document.getElementById("mute-button")
     if (curr_track.volume != 0) {
@@ -423,9 +416,11 @@ let lastShootTime = 0;
 const cooldown = 500;
 
 function destroyMob(laserPos) {
-    mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retirer l'alien touché
+    mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retire l'alien touché
     allDiv[laserPos - 20].classList.remove(theme)
     allDiv[laserPos - 20].classList.add("boom")
+    var audio = new Audio('../ressources/EXPLOSION.mp3'); // EXPLOSIOOOOOOOOON
+    audio.play();
     setTimeout(() => {
         allDiv[laserPos].classList.remove("laser")
         allDiv[laserPos - 20].classList.remove("boom")
@@ -434,7 +429,9 @@ function destroyMob(laserPos) {
 }
 
 function shootSound() {
+    // on créer un nouvel élément audio avec comme source le son
     var audio = new Audio('../ressources/blaster.mp3');
+    // on le joue au moment du tir dans la fonction shoot()
     audio.play();
 }
 
@@ -507,7 +504,7 @@ function end() {
         popTitle.innerHTML = "YOHOUUUU VICTOIRE "
 
         stopTimer();
-        clearInterval(gameInterval)
+        clearInterval(gameInterval);
         var scores = JSON.parse(localStorage.getItem("allScores")) || []; // si undefined valeur pas défaut empty
         var score = { pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }
         scores.push(JSON.stringify(score));
@@ -515,6 +512,10 @@ function end() {
     }
 
 }
+
+/* scores = ["{ pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }",];
+
+scores = "['{ pseudo: pseudo, theme: theme, difficulty: difficulty, scoreVal: elapsedTime }', ]"; */
 
 function formatTime(timeToFormat) {
     var minutes = Math.floor(timeToFormat / 60000);
@@ -532,13 +533,11 @@ function formatTime(timeToFormat) {
 
 
 function updateChrono() {
-    var currentTime = Date.now() - startTime;
-    document.getElementById("chrono").innerHTML = formatTime(currentTime);;
+    document.getElementById("chrono").innerHTML = formatTime(elapsedTime);
 }
 
 function stopTimer() {
     clearInterval(timerInterval);
-    endTime = Date.now();
 }
 
 function startTimer() {
@@ -546,7 +545,7 @@ function startTimer() {
     startTime = Date.now() - elapsedTime;
     timerInterval = setInterval(function () {
         elapsedTime = Date.now() - startTime;
-        updateChrono(elapsedTime);
+        updateChrono();
     }, 10);
 }
 
