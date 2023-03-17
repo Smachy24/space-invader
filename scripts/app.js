@@ -442,8 +442,8 @@ function shootSound() {
     audio.play();
 }
 
-function shoot() {
-    shootSound(); // fonction pour le bruit lors du tir
+
+    
 let powerPos = null
 let powerInterval = null;
 
@@ -495,18 +495,15 @@ function moveDownPower(){
 }
 
 function dropPower(alienPos){
-    let dropLuck = Math.floor(Math.random() * 10)
+    let dropLuck = Math.floor(Math.random() * 20)
     console.log(dropLuck)
     if(dropLuck==1){
         loadPower(alienPos)
-        powerInterval = setInterval(moveDownPower,1000)
+        powerInterval = setInterval(moveDownPower,200)
     }
     
 }
 
-function powerDoubleLaser(){
-
-}
 
 function powerSpeed(){
     cooldown=300
@@ -535,6 +532,7 @@ function destroyMob(laserPos) {
 }
 
 function shoot(position) {
+    shootSound(); // fonction pour le bruit lors du tir
     const currentTime = Date.now();
     if (currentTime - lastShootTime < cooldown) {
         return;
