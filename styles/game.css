@@ -134,6 +134,7 @@ li {
     height: 20vh;
     padding: 0px 50px;
     width: fit-content;
+    z-index: 100;
 }
 
 .music-title{
