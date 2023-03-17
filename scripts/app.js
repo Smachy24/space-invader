@@ -596,23 +596,18 @@ function shoot(position) {
 window.addEventListener('keyup', (event) => {
     if (event.key === "ArrowLeft") {
         moveLeft();
-        playTrack();
     }
     if (event.key === "ArrowRight") {
         moveRight();
-        playTrack();
     }
     if (event.key === "ArrowUp") {
         moveUp();
-        playTrack();
     }
     if (event.key === "ArrowDown") {
         moveDown();
-        playTrack();
     }
     if (event.code === "Space") {
         shoot();
-        playTrack();
     }
 })
 
