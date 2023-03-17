@@ -15,6 +15,8 @@ var theme = localStorage.getItem("theme");
 var difficulty = localStorage.getItem("difficulty");
 let laser;
 
+let hasPower = false;
+
 pseudoLabel.innerHTML = `Pseudo: ${pseudo}`;
 themeLabel.innerHTML = `Theme: ${theme}`;
 difficultyLabel.innerHTML = `Difficulté: ${difficulty}`;
@@ -387,7 +389,6 @@ function loadShoot(position) {
     if (position) {
         laserPos = position
     }
-    console.log(laserPos)
 
     if (allDiv[laserPos].className == theme) {
         destroyMob(laserPos + 20);
@@ -398,23 +399,29 @@ function loadShoot(position) {
 
 function moveShootUp() {
 
-    if (allDiv[laserPos - 20].className == theme) {
-        if (shootBomb == true) {
-            const centerMob = laserPos;
-            destroyMob(centerMob)
-            destroyMob(centerMob - 1)
-            destroyMob(centerMob + 1)
-            destroyMob(centerMob - 20)
-            destroyMob(centerMob + 20)
-            shootBomb = false
-            return true;
+    try{
+        if (allDiv[laserPos - 20].className == theme) {
+            if (shootBomb == true) {
+                const centerMob = laserPos;
+                destroyMob(centerMob)
+                destroyMob(centerMob - 1)
+                destroyMob(centerMob + 1)
+                destroyMob(centerMob - 20)
+                destroyMob(centerMob + 20)
+                shootBomb = false
+                return true;
+            }
+            else {
+                destroyMob(laserPos);
+                return true;
+            }
+    
         }
-        else {
-            destroyMob(laserPos);
-            return true;
-        }
-
     }
+    catch(e){
+        allDiv[laserPos].classList.remove(laser)
+    }
+    
     allDiv[laserPos].classList.remove(laser)
     laserPos -= 20
     if (laserPos >= 0) {
@@ -427,7 +434,7 @@ function moveShootUp() {
 }
 
 let lastShootTime = 0;
-let cooldown = 500;
+let cooldown = 800;
 
 function destroyMob(laserPos) {
     mobs.splice(mobs.indexOf(laserPos - 20), 1) // On retire l'alien touché
@@ -471,18 +478,20 @@ let powerInterval = null;
 let shootBomb = false
 
 function loadPower(alienPos) {
+    hasPower=true
     const powerUp = ["power-bomb", "power-speed"]
     powerPos = alienPos
     while (powerPos < Math.max.apply(Math, mobs)) {
         powerPos += 20
     }
     allDiv[powerPos].classList.add(powerUp[Math.floor(Math.random() * powerUp.length)])
+    setTimeout(() =>hasPower=false,2000)
 }
 
 function moveDownPower() {
     powerClass = allDiv[powerPos].className
     if (powerPos < 219) {
-        if (powerPos + 20 == shipPos) {
+        if (powerPos + 20 == shipPos ||powerPos+1== shipPos ||powerPos+1== shipPos) {
             console.log("VAISSEAU")
             console.log(powerClass);
             switch (powerClass) {
@@ -510,26 +519,35 @@ function moveDownPower() {
         }
     }
     else {
-        allDiv[powerPos].classList.remove(powerClass)
+        try {
+            allDiv[powerPos].classList.remove(powerClass);
+          } catch (error) {
+            allDiv[powerPos].className="tireur"
+          }
+       
         clearInterval(powerInterval)
     }
 }
 
 function dropPower(alienPos) {
-    let dropLuck = Math.floor(Math.random() * 20)
-    console.log(dropLuck)
-    if (dropLuck == 1) {
-        loadPower(alienPos)
-        powerInterval = setInterval(moveDownPower, 200)
+    if(!hasPower){
+        let dropLuck = Math.floor(Math.random() * 10)
+        console.log(dropLuck)
+        if (dropLuck == 1) {
+            loadPower(alienPos)
+            powerInterval = setInterval(moveDownPower, 200)
+        }
+        
     }
+    
 
 }
 
 
 function powerSpeed() {
-    cooldown = 300
+    cooldown = 400
     setTimeout(() => {
-        cooldown = 500
+        cooldown = 800
         console.log("SPEED 5s");
     }, 5000);
 
